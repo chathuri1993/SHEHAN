@@ -105,69 +105,7 @@ include './metaLibs.php';
                             <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
                             <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
                         </tr>
-                        <tr>
-                            <td>John</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>John</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>John</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
+                      
                     </tbody>
                 </table> 
             </div>
