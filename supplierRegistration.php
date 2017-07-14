@@ -105,7 +105,7 @@ include './metaLibs.php';
                             <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
                             <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
                         </tr>
-                      
+
                     </tbody>
                 </table> 
             </div>
