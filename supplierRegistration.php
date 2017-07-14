@@ -2,7 +2,7 @@
 <?php
 include './metaLibs.php';
 ?>
-<title>Shehan Home</title>
+<title>Supplier Registration</title>
 </head>
 <body>
     <?php
