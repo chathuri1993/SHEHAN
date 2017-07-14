@@ -1,8 +1,6 @@
- <div class="row">
-        <div class="col-lg-12 text-center"><img src="images/logo/shehan.svg"  width="300px" height="100px"/></div>
-    </div>
-    <nav class="navbar navbar-default">
-
+ 
+    <nav class="navbar navbar-default" id="pagetop">
+        <div style="background-color: #ffffff" class="col-lg-12 text-center"><img src="images/logo/shehan.svg"  width="300px" height="100px"/></div>
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">

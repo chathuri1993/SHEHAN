@@ -4,10 +4,18 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : Jul 12, 2017, 4:21:52 PM
+    Created on : Jul 13, 2017, 3:14:56 PM
     Author     : chathuri
 */
-
-.navbar {
-    border-radius: 0px!important;
+.rowPadding{
+   padding-top:6px; 
+}
+.valign{
+    vertical-align: sub;
+}
+.btnsize{
+       width: 100px;
+}
+.btntablesize{
+    width: 72px;
 }
