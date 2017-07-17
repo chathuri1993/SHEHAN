@@ -3,6 +3,12 @@
 include './metaLibs.php';
 ?>
 <title>Supplier Registration</title>
+<script>
+    $(document).ready(function () {
+        loadSupplierDetails();
+    });
+
+</script>
 </head>
 <body>
     <?php
@@ -46,7 +52,8 @@ include './metaLibs.php';
             <div class="col-lg-5 col-md-5 col-sm-4"></div>
             <div class="col-lg-1 col-md-1 col-sm-2 col-xs-6 text-center">
                 <input type="hidden" value="save" id="supplier_action">
-                <button class="btn btn-default btn-primary btnsize" id="supplier_save">Save</button>
+                <input type="hidden" value="0" id="supplier_id">
+                <button class="btn btn-default btn-primary btnsize" onclick="supplierRegitation()" id="supplier_save">Save</button>
             </div>
             <div class="col-lg-1 col-md-1 col-sm-2 col-xs-6 text-center">
                 <button class="btn btn-default btnsize" onclick="sup_cancel()">Cancel</button>
@@ -83,28 +90,8 @@ include './metaLibs.php';
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>John</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>077258258</td>
-                            <td>No 55/A, Main Rd, Colombo</td>
-                            <td class="text-center"><button class="btn btn-default btn-primary btntablesize" onclick="sup_changeText()">View</button></td>
-                            <td class="text-center"><button class="btn btn-default btn-danger btntablesize">Block</button></td>
-                        </tr>
+                    <tbody id="supplier_table">
+
 
                     </tbody>
                 </table> 
@@ -114,6 +101,6 @@ include './metaLibs.php';
 
     </div>
 
-
+    <script src="js/shehan.main.js"></script>
 </body>
 </html>
