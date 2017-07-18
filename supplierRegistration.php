@@ -1,4 +1,3 @@
-
 <?php
 include './metaLibs.php';
 ?>
@@ -16,7 +15,7 @@ include './metaLibs.php';
     ?>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 text-center h2">Supplier Regitration</div>
+            <div class="col-lg-12 text-center h2">Supplier Registration</div>
 
         </div>
     </div>
