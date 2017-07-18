@@ -19,3 +19,7 @@ and open the template in the editor.
 .btntablesize{
     width: 72px;
 }
+.spanMsg{
+    color: red;
+    font-size: 12px;
+}

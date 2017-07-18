@@ -18,7 +18,19 @@ function sup_cancel() {
     $('#supplier_name').val("");
     $('#supplier_contactno').val("");
     $('#supplier_address').val("");
+    $('#supplier_name_key').val("");
+    $('#supplier_status').empty();
+}
+function sup_clear() {
+    $('#supplier_save').html("Save");
+    $('#supplier_action').val("save");
+    $('#supplier_name').val("");
+    $('#supplier_contactno').val("");
+    $('#supplier_address').val("");
+    $('#supplier_name_key').val("");
 
-
+}
+function clearElement(val) {
+    $(val).html("");
 }
 
