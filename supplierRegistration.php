@@ -60,6 +60,17 @@ include './metaLibs.php';
         <div class="col-lg-3 col-md-3 col-sm-2 "></div>
     </div>
     <div class="row rowPadding">
+        <div class="col-lg-3 col-md-3 col-sm-2"></div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+            <label class="valign">Discount</label>
+        </div>
+        <div class="col-lg-1 col-md-5 col-sm-7 col-xs-12">
+            <span id="supplier_discount_span" class="spanMsg"></span>
+            <input type="number" class="form-control" onfocus="clearElement('#supplier_discount_span')" placeholder="20" id="supplier_discount" name="supplier_discount">
+        </div>
+        <div class="col-lg-7 col-md-3 col-sm-2 "> <label class="valign">%</label></div>
+    </div>
+    <div class="row rowPadding">
         <div class="col-lg-5 col-md-5 col-sm-4"></div>
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-6 text-center">
             <input type="hidden" value="save" id="supplier_action">
@@ -97,6 +108,7 @@ include './metaLibs.php';
                         <th>Name</th>
                         <th>Contact No</th>
                         <th>Address</th>
+                        <th>Discount</th>
                         <th></th>
                         <th></th>
                     </tr>

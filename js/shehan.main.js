@@ -12,6 +12,7 @@ function supplier_Table(data) {
         tableDesign += "<td>" + data[i].name + "<input type='hidden' value='" + data[i].idsupplier + "' id='supid" + i + "'/></td>";
         tableDesign += "<td>" + data[i].contactno + "</td>";
         tableDesign += "<td>" + data[i].address + "</td>";
+        tableDesign += "<td>" + data[i].company_discount + "%</td>";
         tableDesign += "<td class='text-center'><button class='btn btn-default btn-primary btntablesize' onclick='loadSupFormData(" + data[i].idsupplier + ")'>View</button></td>";
         if (data[i].active_status == 1) {
             tableDesign += "<td class='text-center'><button class='btn btn-default btn-danger btntablesize' onclick='active_status_supplier(" + data[i].idsupplier + ",0)'>Block</button></td>";
@@ -29,6 +30,7 @@ function supplierRegitation() {
     var name = $('#supplier_name').val();
     var contactno = $('#supplier_contactno').val();
     var address = $('#supplier_address').val();
+    var discount = $('#supplier_discount').val();
     var action = $('#supplier_action').val();
     if (name == "") {
         $('#name_span').html("Please fill requred data");
@@ -52,6 +54,7 @@ function supplierRegitation() {
                 name: name,
                 contactno: contactno,
                 address: address,
+                discount: discount,
                 action: action,
                 id: id
             },
@@ -109,6 +112,7 @@ function loadSupFormData(val) {
                 $('#supplier_name').val(data[i].name);
                 $('#supplier_contactno').val(data[i].contactno);
                 $('#supplier_address').val(data[i].address);
+                $('#supplier_discount').val(data[i].company_discount);
                 $('#supplier_id').val(data[i].idsupplier);
             }
         },
@@ -178,3 +182,103 @@ function active_status_supplier(id, status) {
 }
 
 
+// ********************************* GRN ****************************************//
+
+function loadSupplierNames() {
+    $.ajax({
+        type: "POST",
+        url: './DAO/view_Suppliers.php',
+        data: {
+        },
+        dataType: 'JSON',
+        success: function (data) {
+            var optionDesign = "";
+
+            for (var i = 0; i < data.length; i++) {
+                optionDesign += "<option value=" + data[i].idsupplier + ">" + data[i].name + "</option>";
+            }
+
+            $('#grn_supplier_name').append(optionDesign);
+
+            var id = new Date().getUTCMilliseconds();
+            $('#grn_id').append(id);
+
+//            $('#grn_supplier_name').editableSelect();
+
+        },
+
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+
+function loadProducts(val) {
+    if (val != 0) {
+        $.ajax({
+            type: "POST",
+            url: './DAO/load_Products.php',
+            data: {
+                supplierKey: val
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                var optionDesign = "";
+                for (var i = 0; i < data.length; i++) {
+                    optionDesign += "<option value=" + data[i].idproduct + ">" + data[i].description + "</option>";
+                }
+                $('#grn_products').append(optionDesign);
+
+//            $('#grn_supplier_name').editableSelect();
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+}
+function loadProductDetails(val) {
+    if (val != 0) {
+        $.ajax({
+            type: "POST",
+            url: './DAO/load_Product_Details.php',
+            data: {
+                productKey: val
+            },
+            dataType: 'JSON',
+            success: function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    $('#grn_discount').val(data[i].company_discount + "%");
+                    $('#grn_unit_price').val(data[i].unit_price);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+}
+
+function save_grn(val) {
+    if (val != 0) {
+        $.ajax({
+            type: "POST",
+            url: './DAO/load_Product_Details.php',
+            data: {
+                productKey: val
+            },
+            dataType: 'JSON',
+            success: function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    $('#grn_discount').val(data[i].company_discount + "%");
+                    $('#grn_unit_price').val(data[i].unit_price);
+                }
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+}

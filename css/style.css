@@ -8,13 +8,18 @@ and open the template in the editor.
     Author     : chathuri
 */
 .rowPadding{
-   padding-top:6px; 
+    padding-top:6px; 
 }
 .valign{
     vertical-align: sub;
 }
 .btnsize{
-       width: 100px;
+    width: 100px;
+}
+.mainbtnsize{
+    width: 190px;
+    height: 60px;
+    font-size: 26px!important;
 }
 .btntablesize{
     width: 72px;
