@@ -1,3 +1,3 @@
 # CHATHURI
-Shehan whhel alignment system
+Shehan wheel alignment system
 
