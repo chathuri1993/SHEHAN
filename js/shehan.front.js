@@ -39,17 +39,22 @@ function addRow() {
     var qty = $("#grn_qty").val();
     var unit_price = $("#grn_unit_price").val();
     var discount = $("#grn_discount").val();
-     var products =$('#grn_products option:selected').html()
+    var products = $('#grn_products option:selected').html()
 //    var products = $("#grn_products").text();
     var markup = "";
+    var price = (unit_price - ((unit_price * discount) / 100)) * qty;
+   
     markup += "<tr>";
+    markup += "<td><input type='checkbox' name='grn_status'/></td>";
     markup += "<td>" + products + "</td>";
     markup += "<td>" + unit_price + "</td>";
     markup += "<td>" + discount + "</td>";
     markup += "<td>" + qty + "</td>";
-    markup += "<td><input type='checkbox' name='grn_status'/></td>";
+    markup += "<td class='grn_total'>" +  parseFloat(price).toFixed(2) + "</td>";
     markup += "</tr>";
     $("#grn_table").append(markup);
+
+    sumOfColumns();
 }
 
 function deleteRow() {
@@ -57,5 +62,16 @@ function deleteRow() {
         if ($(this).is(":checked")) {
             $(this).parents("tr").remove();
         }
+    });
+}
+
+function sumOfColumns() {
+ 
+    var totalPrice = 0;
+  
+
+    $(".grn_total").each(function () {
+        totalPrice += parseInt($(this).html());
+        $("#grn_total_amount").html( parseFloat(totalPrice).toFixed(2));
     });
 }

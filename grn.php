@@ -51,7 +51,7 @@ include './metaLibs.php';
                 </select>
 
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-1 "></div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
 
         <div class="row rowPadding">
@@ -71,45 +71,47 @@ include './metaLibs.php';
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                 <label class="valign">Qty</label>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <span id="grn_span" class="spanMsg"></span>
                 <input type="number" class="form-control" required placeholder="1" value="1" id="grn_qty" min="1" name="grnid" aria-describedby="basic-addon1">
             </div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                 <label class="valign">Unit Price</label>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">         
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">         
                 <input type="number" class="form-control" required placeholder="10000.00" id="grn_unit_price" min="1" name="grnid" aria-describedby="basic-addon1">
             </div>
-            <div class="col-lg-1 col-md-2 col-sm-3 col-xs-12">         
-                <label class="valign">Discount</label>
+            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">         
+                <label class="valign">Discount(%)</label>
             </div>
-            <div class="col-lg-1 col-md-2 col-sm-3 col-xs-12">     
+            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">     
                 <div class="input-group">
                     <input type="text" class="form-control" required placeholder="50%" max="100" id="grn_discount" min="1" name="grnid" aria-describedby="basic-addon1">
+                    <input type="hidden" id="grn_discount_hidden">
                 </div>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-1 "></div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
-            <div class="col-lg-8 col-md-1 col-sm-1 col-xs-12">
+            <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12">
                 <button class="btn btn-warning btnsize" onclick="addRow()">Add &nbsp;<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1 "></div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
-            <div class="col-lg-8 col-md-1 col-sm-1 col-xs-12">
+            <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12">
                 <span class="label label-default pull-right">Please tick on check box to remove products from the table</span>
-                <table class="table table-hover table-bordered table-responsive">
+                <table class="table table-hover table-bordered table-responsive" id="grn_product_table">
                     <thead>
                         <tr>
+                            <th>Check</th>
                             <th>Product</th>
                             <th>Unit price</th>
                             <th>Discount</th>
                             <th>Qty</th>
-                            <th></th>
+                            <th>Price</th>
 
                         </tr>
                     </thead>
@@ -119,19 +121,29 @@ include './metaLibs.php';
                     </tbody>
                 </table> 
             </div>
-
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
-            <div class="col-lg-8 col-md-1 col-sm-1 col-xs-12">
+            <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12">
                 <button class="btn btn-warning btnsize" onclick="deleteRow()">Remove &nbsp;<span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1 "></div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                <h2><span class="label label-default pull-right">Total (Rs.)</h2>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                <h2 class="pull-right"><span id="grn_total_amount">0.00</span></h2>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        </div>
+        <div class="row rowPadding">
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-8 col-md-1 col-sm-1 col-xs-12 text-center">
-                <button class="btn btn-primary mainbtnsize">SAVE GRN</button>
+                <button class="btn btn-primary mainbtnsize" onclick="save_Grn()">SAVE GRN</button>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1 "></div>
         </div>

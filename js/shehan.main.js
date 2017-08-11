@@ -195,9 +195,10 @@ function loadSupplierNames() {
             var optionDesign = "";
 
             for (var i = 0; i < data.length; i++) {
-                optionDesign += "<option value=" + data[i].idsupplier + ">" + data[i].name + "</option>";
+                if (data[i].active_status == '1') {
+                    optionDesign += "<option value=" + data[i].idsupplier + ">" + data[i].name + "</option>";
+                }
             }
-
             $('#grn_supplier_name').append(optionDesign);
 
             var id = new Date().getUTCMilliseconds();
@@ -249,8 +250,8 @@ function loadProductDetails(val) {
             success: function (data) {
 
                 for (var i = 0; i < data.length; i++) {
-                    $('#grn_discount').val(data[i].company_discount + "%");
-                    $('#grn_unit_price').val(data[i].unit_price);
+                    $('#grn_discount').val(data[i].company_discount);
+                    $('#grn_unit_price').val(parseFloat(data[i].unit_price).toFixed(2));
                 }
             },
             error: function (e) {
@@ -260,7 +261,7 @@ function loadProductDetails(val) {
     }
 }
 
-function save_grn(val) {
+function change_grn_action(val) {
     if (val != 0) {
         $.ajax({
             type: "POST",
@@ -281,4 +282,58 @@ function save_grn(val) {
             }
         });
     }
+}
+
+function save_Grn() {
+    var array = getTableData();
+    alert(JSON.stringify(array));
+
+    var grinid = $('#grn_id').val();
+    var supplier_id = $('#grn_supplier_name').val();
+
+    $.ajax({
+        type: "POST",
+        url: './DAO/save_grn.php',
+        data: {
+            grnid:grinid,
+            supplier_id:supplier_id,
+            grn_table:JSON.stringify(array)
+            
+        },
+        dataType: 'JSON',
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+
+function getTableData() {
+    var array = [];
+    var headers = [];
+    var txt = "";
+
+    $('#grn_product_table th').each(function (index, item) {
+        headers[index] = $(item).html();
+    });
+    $('#grn_product_table tr').has('td').each(function () {
+        var arrayItem = {};
+        $('td', $(this)).each(function (index, item) {
+            arrayItem[headers[index]] = $(item).html();
+        });
+        array.push(arrayItem);
+    });
+
+
+// Iterate Values *******************************
+//    for (x in array) {
+//        txt += array[x].Product;
+//         console.log(txt);
+//    }
+//   
+
+    return array;
+
 }
