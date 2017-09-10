@@ -108,6 +108,7 @@ include './metaLibs.php';
                         <tr>
                             <th>Check</th>
                             <th>Product</th>
+                            <th style="display:none;">Productid</th>
                             <th>Unit price</th>
                             <th>Discount</th>
                             <th>Qty</th>

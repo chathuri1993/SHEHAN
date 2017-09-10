@@ -65,3 +65,6 @@ function active_status($table, $column, $colval, $key, $value) {
         return "Error";
     }
 }
+function save_grn(){
+    
+}

@@ -12,11 +12,15 @@ $grn_product = $_POST['grn_table'];
 $product = "";
 $x = "";
 $array = json_decode($grn_product, true);
-//foreach ($array as $customer) {
-// $customer+=array[x].Product
-//}
-//for ($grn_product as x) {
-//        $product += array[x].Product;
-//         console.log(txt);
-//    }
-echo json_encode($customer);
+
+$data = json_decode($grn_product, true);
+$sports = array();
+foreach ($data as $item) {
+    $Qty = $item['Qty'];
+    $product = $item['Product'];
+    $productid = $item['Productid'];
+    $unitprice= $item['Unit price'];
+    $unitprice= $item['price'];
+}
+
+echo json_encode($sports);

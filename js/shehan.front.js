@@ -39,7 +39,8 @@ function addRow() {
     var qty = $("#grn_qty").val();
     var unit_price = $("#grn_unit_price").val();
     var discount = $("#grn_discount").val();
-    var products = $('#grn_products option:selected').html()
+    var products = $('#grn_products option:selected').html();
+    var productid = $('#grn_products option:selected').val();
 //    var products = $("#grn_products").text();
     var markup = "";
     var price = (unit_price - ((unit_price * discount) / 100)) * qty;
@@ -47,6 +48,7 @@ function addRow() {
     markup += "<tr>";
     markup += "<td><input type='checkbox' name='grn_status'/></td>";
     markup += "<td>" + products + "</td>";
+    markup += "<td style='display:none;'>" + productid + "</td>";
     markup += "<td>" + unit_price + "</td>";
     markup += "<td>" + discount + "</td>";
     markup += "<td>" + qty + "</td>";
