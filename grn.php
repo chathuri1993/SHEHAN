@@ -46,7 +46,7 @@ include './metaLibs.php';
                 <label class="valign">Supplier</label>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12" id="grn_option">         
-                <select id="grn_supplier_name" class="form-control" onchange="loadProducts(this.value)"> 
+                <select id="grn_supplier_name" name="grnsuppliername" class="form-control" onchange="loadProducts(this.value)"> 
                     <option value="0" selected="true" disabled="disabled">Please select supplier</option>
                 </select>
 
@@ -137,14 +137,34 @@ include './metaLibs.php';
                 <h2><span class="label label-default pull-right">Total (Rs.)</h2>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                <h2 class="pull-right"><span id="grn_total_amount">0.00</span></h2>
+                <h2 class="pull-right"><span id="grn_total_amount" name="grntotalamount">0.00</span></h2>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        </div>
+        <div class="row rowPadding">
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                <h4><span class="label label-primary pull-right">Paid (Rs.)</h4>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                <input type="number" class="form-control pull-right" style="font-size: 30px" required id="grn_paid_amount" name="grnpaidamount" >
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        </div>
+        <div class="row rowPadding">
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+            <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                  <h4><span class="label label-primary pull-right">Balance (Rs.)</h4>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                <h2 class="pull-right"><span id="grn_balance" name="grnbalance">0.00</span></h2>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-8 col-md-1 col-sm-1 col-xs-12 text-center">
-                <button class="btn btn-primary mainbtnsize" onclick="save_Grn()">SAVE GRN</button>
+                <button style="margin-bottom: 20px;" class="btn btn-primary mainbtnsize" onclick="save_Grn()">SAVE GRN</button>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1 "></div>
         </div>

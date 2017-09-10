@@ -290,6 +290,9 @@ function save_Grn() {
 
     var grinid = $('#grn_id').val();
     var supplier_id = $('#grn_supplier_name').val();
+    var total_amount = $('#grn_total_amount').text();
+    var paid_amount = $('#grn_paid_amount').val();
+    var balance = $('#grn_balance').text();
 
     $.ajax({
         type: "POST",
@@ -297,6 +300,9 @@ function save_Grn() {
         data: {
             grnid:grinid,
             supplier_id:supplier_id,
+            grntotalamount:total_amount,
+            grnpaidamount:paid_amount,
+            grnbalance:balance,
             grn_table:JSON.stringify(array)
             
         },

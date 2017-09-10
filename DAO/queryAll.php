@@ -13,6 +13,7 @@ function getDetails($tableName, $columnName, $order) {
     $details = $DB->query("SELECT * FROM $tableName order by $columnName $order");
     return $details;
 }
+
 function geProducts($key) {
     global $DB;
 
@@ -65,6 +66,26 @@ function active_status($table, $column, $colval, $key, $value) {
         return "Error";
     }
 }
-function save_grn(){
-    
+
+function save_grn($idgrn, $total_amount, $paid_amount, $balance, $issued_by, $discount) {
+    global $DB;
+    $dataArray = array("idgrn" => "$idgrn", "totoal_amount" => "$total_amount", "paid_amount" => "$paid_amount", "balance" => "$balance", "issued_by" => "$issued_by", "discount" => "$discount");
+    $status = $DB->insert("grn", $dataArray);
+    if ($status == TRUE) {
+        return "1";
+    } else {
+        return "0";
+    }
+}
+
+function save_grnRegistry($idgrn, $qty, $unit_price, $idproduct) {
+    global $DB;
+
+    $dataArray = array("idgrnregistry" => 0, "qty" => "$qty", "unit_price" => "$unit_price", "idgrn" => "$idgrn", "idproduct" => "$idproduct");
+    $status = $DB->insert("grnregistry", $dataArray);
+    if ($status == TRUE) {
+        return "Success";
+    } else {
+        return "Error";
+    }
 }

@@ -9,18 +9,28 @@ include './queryAll.php';
 
 
 $grn_product = $_POST['grn_table'];
-$product = "";
-$x = "";
-$array = json_decode($grn_product, true);
+$grn_id = $_POST['grnid'];
+$grn_supplier_name = $_POST['supplier_id'];
+$grn_total_amount = $_POST['grntotalamount'];
+$grn_paid_amount = $_POST['grnpaidamount'];
+$grn_balance = $_POST['grnbalance'];
+$issued_by = "Chathuri";
+$discount ="0";
 
-$data = json_decode($grn_product, true);
-$sports = array();
-foreach ($data as $item) {
-    $Qty = $item['Qty'];
-    $product = $item['Product'];
-    $productid = $item['Productid'];
-    $unitprice= $item['Unit price'];
-    $unitprice= $item['price'];
+$status2="";
+$status = save_grn($grn_id, $grn_total_amount, $grn_paid_amount, $grn_balance, $issued_by, $discount);
+if ($status == "1") {
+    $data = json_decode($grn_product, true);
+    $sports = array();
+    foreach ($data as $item) {
+        $qty = $item['Qty'];
+        $product = $item['Product'];
+        $productid = $item['Productid'];
+        $unitprice = $item['Unit price'];
+        $producttotal = $item['Price'];
+        $status2 = save_grnRegistry($grn_id, $qty, $unitprice, $productid);
+    }
 }
 
-echo json_encode($sports);
+
+echo json_encode($status);
