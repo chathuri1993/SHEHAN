@@ -21,6 +21,17 @@ function geProducts($key) {
     return $details;
 }
 
+function generateID() {
+    global $DB;
+    $today = date("Y-m-d");
+    $grnCounts = '';
+    $details = $DB->query("SELECT count(idgrn) as co FROM grn WHERE date(issued_date)='$today'");
+    foreach ($details as $value) {
+        $grnCounts = $value["co"];
+    }
+    return $grnCounts;
+}
+
 function getDetailsCondition($tableName, $columnName, $key) {
     global $DB;
     if ($tableName == NULL)

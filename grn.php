@@ -6,9 +6,9 @@ include './metaLibs.php';
     .es-list { max-height: 160px !important; }
 </style>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
-
+        generateId();
         loadSupplierNames();
     });
 
@@ -32,7 +32,13 @@ include './metaLibs.php';
             </div>
             <div class="col-lg-3 col-md-3 col-sm-2 "></div>
         </div>
-
+        <div class="row rowPadding">
+            <div class="col-lg-3 col-md-3 col-sm-2"></div>
+            <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
+                <div id="grn_status"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-2 "></div>
+        </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
@@ -40,7 +46,7 @@ include './metaLibs.php';
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                 <span id="grn_span" class="spanMsg"></span>
-                <input type="text" class="form-control" required   id="grn_id" name="grnid" >
+                <input  type="text" disabled="" class="form-control" required   id="grn_id" name="grnid" >
             </div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                 <label class="valign">Supplier</label>
@@ -134,10 +140,11 @@ include './metaLibs.php';
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
-                <h2><span class="label label-default pull-right">Total (Rs.)</h2>
+                 <span class="label label-default pull-right amountstyles">Total (Rs.)</span> 
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                <h2 class="pull-right"><span id="grn_total_amount" name="grntotalamount">0.00</span></h2>
+                <input type="number" disabled="" class="form-control pull-right amountstyles" min="0" required id="grn_total_amount" name="grntotalamount">
+                <!--<h2 class="pull-right"><span id="grn_total_amount" name="grntotalamount">0.00</span></h2>-->
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
@@ -147,17 +154,18 @@ include './metaLibs.php';
                 <h4><span class="label label-primary pull-right">Paid (Rs.)</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                <input type="number" class="form-control pull-right" style="font-size: 30px" required id="grn_paid_amount" name="grnpaidamount" >
+                <input type="number" class="form-control pull-right amountstyles" min="0" required id="grn_paid_amount" name="grnpaidamount">
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
-                  <h4><span class="label label-primary pull-right">Balance (Rs.)</h4>
+                <h4><span class="label label-primary pull-right">Balance (Rs.)</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                <h2 class="pull-right"><span id="grn_balance" name="grnbalance">0.00</span></h2>
+                <input type="number" disabled="" class="form-control pull-right amountstyles" min="0" required id="grn_balance" name="grnbalance">
+                <!--<h2 class="pull-right"><span id="grn_balance" name="grnbalance">0.00</span></h2>-->
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>

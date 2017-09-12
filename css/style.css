@@ -28,3 +28,7 @@ and open the template in the editor.
     color: red;
     font-size: 12px;
 }
+.amountstyles{
+    text-align: right;
+    font-size: 30px!important;
+}
