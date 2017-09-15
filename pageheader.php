@@ -19,7 +19,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="supplierRegistration.php">Supplier Management</a></li>
                             <li><a href="grn.php">GRN</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <li><a href="grnRecords.php">GRN Records</a></li>
                         </ul>
                     </li>
                         <li class="dropdown">
