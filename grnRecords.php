@@ -8,11 +8,30 @@ include './metaLibs.php';
 <script>
     $(document).ready(function() {
 
-        generateId();
-        loadSupplierNames();
+        loadGRNRecords();
     });
 
 </script>
+<style>
+    .modal {
+        text-align: center;
+        padding: 0!important;
+    }
+
+    .modal:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+</style>
 </head>
 <body>
     <?php
@@ -20,7 +39,7 @@ include './metaLibs.php';
     ?>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12"><a href="supplierRegistration.php" class="pull-right btn btn-primary">New Supplier&nbsp; <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><a href="grn.php" class="pull-right btn btn-primary">New GRN&nbsp; <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
         </div>
         <div class="row">
             <div class="col-lg-12 text-center h2">GRN Records</div>
@@ -35,18 +54,15 @@ include './metaLibs.php';
                             <span id="search_concept">Filter by</span> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#contains">Contains</a></li>
-                            <li><a href="#its_equal">It's equal</a></li>
-                            <li><a href="#greather_than">Greather than ></a></li>
-                            <li><a href="#less_than">Less than < </a></li>
-                            <li class="divider"></li>
-                            <li><a href="#all">Anything</a></li>
+                            <li><a href="#idgrn">GRN Id</a></li>
+                            <li><a href="#name">Supplier</a></li>
+                            <li><a href="#issued_by">Issued By</a></li>
                         </ul>
                     </div>
-                    <input type="hidden" name="search_param" value="all" id="search_param">         
-                    <input type="text" class="form-control" name="x" placeholder="Search term...">
+                    <input type="hidden" name="search_param" value="idgrn" id="search_param">         
+                    <input type="text" id="search_val" onkeyup="loadGRNRecords()" class="form-control" name="x" placeholder="Search term...">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                        <button onclick="loadGRNRecords()" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
 
@@ -69,35 +85,72 @@ include './metaLibs.php';
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-1 col-sm-2"></div>
             <div class="col-lg-8 col-md-10 col-sm-8 col-xs-12">
-                <div id="grn_status"></div>
+                <div id="grn_records_status"></div>
             </div>
             <div class="col-lg-2 col-md-1 col-sm-2 "></div>
         </div>
 
-
-
-
         <div class="row rowPadding">
-            <div class="col-lg-2 col-md-2 col-sm-1"></div>
-            <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12">
-                <table class="table table-hover table-bordered table-responsive" id="grn_product_table">
-                    <thead>
-                        <tr>
-                            <th>Check</th>
-                            <th>Product</th>
-                            <th style="display:none;">Productid</th>
-                            <th>Unit price</th>
-                            <th>Discount</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody id="grn_table"></tbody>
-                </table> 
+            <div class="col-lg-1 col-md-1 col-sm-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <div class="table-responsive">    
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>GRN Id</th>
+                                <th>Issued Date</th>
+                                <th>Total amount</th>
+                                <!--<th style="display:none;">Total amount</th>-->
+                                <th>Paid Amount</th>
+                                <th>Balance</th>
+                                <th>Supplier</th>
+                                <th>Details</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="grn_records_table"></tbody>
+                    </table> 
+                </div>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+            <div class="col-lg-1 col-md-1 col-sm-1"></div>
         </div>
 
+
+        <!--GRN Records Products--> 
+        <!-- Modal -->
+        <div class="modal fade" id="grn_products" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="grn_records_ref"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">    
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Item Code</th>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Unit Price</th>
+                                         
+                                    </tr>
+                                </thead>
+                                <tbody id="grn_records_products"></tbody>
+                            </table> 
+                             <h5 class="modal-title pull-right" id="grn_records_issued"></h5>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     </div>
     <script src="js/shehan.main.js"></script>
@@ -108,7 +161,7 @@ include './metaLibs.php';
         var date_input = $('input[name="date"]'); //our date input has the name "date"
         var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
         var options = {
-            format: 'mm/dd/yyyy',
+            format: 'yyyy-mm-dd',
             container: container,
             todayHighlight: true,
             autoclose: true,
@@ -118,7 +171,9 @@ include './metaLibs.php';
         $('.search-panel .dropdown-menu').find('a').click(function(e) {
             e.preventDefault();
             var param = $(this).attr("href").replace("#", "");
+        
             var concept = $(this).text();
+          
             $('.search-panel span#search_concept').text(concept);
             $('.input-group #search_param').val(param);
         });

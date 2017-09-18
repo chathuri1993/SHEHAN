@@ -15,6 +15,6 @@ $count_s = sprintf("%01d", $count);
 $tz = new DateTimeZone('Asia/Colombo');
 $date = new DateTime('now', $tz);
 $msgtme = $date->format('d-m-Y g:ia');
-$msgtmo = $date->format('Ymd');
-$id = $msgtmo . $count_s;
+$msgtmo = $date->format('dmY');
+$id = $count_s.$msgtmo ;
 echo json_encode($id);

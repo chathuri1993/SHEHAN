@@ -195,7 +195,7 @@ function loadSupplierNames() {
             $('#grn_supplier_name').empty();
             $('#grn_products').empty();
             var optionDesign = "<option value='0' selected='true' disabled='disabled'>Please select supplier</option>";
-            var optionDesignP = "<option value='0' selected='true' disabled='disabled'>Please select product</option>";
+            var optionDesignP = "";
 //            var optionDesign = "";
 
             for (var i = 0; i < data.length; i++) {
@@ -219,6 +219,14 @@ function loadSupplierNames() {
 }
 
 function loadProducts(val) {
+//    if ($('#grn_table').html() != "") {
+//        if (confirm('Clear you have added data after select supplier again')) {
+//            grn_clear();
+//        } else {
+//            // Do nothing!
+//        }
+//    }
+
     if (val != 0) {
         $.ajax({
             type: "POST",
@@ -229,7 +237,7 @@ function loadProducts(val) {
             dataType: 'JSON',
             success: function(data) {
                 $('#grn_products').empty();
-                var optionDesign = "<option value='0' selected='true' disabled='disabled'>Please select product</option>";
+                var optionDesign = "";
 
                 for (var i = 0; i < data.length; i++) {
                     optionDesign += "<option value=" + data[i].idproduct + ">" + data[i].description + "</option>";
@@ -243,6 +251,8 @@ function loadProducts(val) {
             }
         });
     }
+    grn_add_clear();
+
 }
 function loadProductDetails(val) {
     if (val != 0) {
@@ -257,7 +267,7 @@ function loadProductDetails(val) {
 
                 for (var i = 0; i < data.length; i++) {
                     $('#grn_discount').val(data[i].company_discount);
-                    $('#grn_unit_price').val(parseFloat(data[i].unit_price).toFixed(2));
+                    $('#grn_unit_price').val(parseFloat(Math.round((data[i].unit_price) * 100) / 100).toFixed(2));
                 }
             },
             error: function(e) {
@@ -292,42 +302,52 @@ function change_grn_action(val) {
 
 function save_Grn() {
     var array = getTableData();
-
+    var readyStatus = "true";
     var grinid = $('#grn_id').val();
     var supplier_id = $('#grn_supplier_name').val();
     var total_amount = $('#grn_total_amount').val();
     var paid_amount = $('#grn_paid_amount').val();
     var balance = $('#grn_balance').val();
 
-    $.ajax({
-        type: "POST",
-        url: './DAO/save_grn.php',
-        data: {
-            grnid: grinid,
-            supplier_id: supplier_id,
-            grntotalamount: total_amount,
-            grnpaidamount: paid_amount,
-            grnbalance: balance,
-            grn_table: JSON.stringify(array)
+    var productid = $('#grn_products option:selected').val();
+    if (paid_amount == "") {
+        $('#grn_paid_amount_span').html("Please fill required data");
+        readyStatus = "false";
+    }
+    if (productid == undefined) {
+        $('#grn_product_span').html("Please select requred data");
+        readyStatus = "false";
+    }
+    if (readyStatus == "true") {
+        $.ajax({
+            type: "POST",
+            url: './DAO/save_grn.php',
+            data: {
+                grnid: grinid,
+                supplier_id: supplier_id,
+                grntotalamount: total_amount,
+                grnpaidamount: paid_amount,
+                grnbalance: balance,
+                grn_table: JSON.stringify(array)
 
-        },
-        dataType: 'JSON',
-        success: function(data) {
-            if (data == "1") {
-                $('#grn_status').html("<div class='alert alert-success'><strong>Success!</strong></div>");
-                grn_clear();
+            },
+            dataType: 'JSON',
+            success: function(data) {
+                if (data == "1") {
+                    $('#grn_status').html("<div class='alert alert-success'><strong>Success!</strong></div>");
+                    grn_clear();
 
-            } else {
+                } else {
+                    $('#grn_status').html("<div class='alert alert-danger'><strong>Error!</strong>Please try again.</div>");
+                }
+            },
+            error: function(e) {
+                console.log(e);
                 $('#grn_status').html("<div class='alert alert-danger'><strong>Error!</strong>Please try again.</div>");
             }
-        },
-        error: function(e) {
-            console.log(e);
-            $('#grn_status').html("<div class='alert alert-danger'><strong>Error!</strong>Please try again.</div>");
-        }
-    });
+        });
+    }
 }
-
 function getTableData() {
     var array = [];
     var headers = [];
@@ -370,4 +390,86 @@ function generateId() {
             console.log(e);
         }
     });
+}
+
+//********************************************* GRN Records
+
+function loadGRNRecords() {
+
+    var search_param = $('#search_param').val();
+    var search_val = $('#search_val').val();
+    var grn_date = $('#date').val();
+    
+    $.ajax({
+        type: "POST",
+        url: './DAO/load_grn.php',
+        data: {
+            search_param: search_param,
+            search_val: search_val,
+            grn_date:grn_date
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            $('#grn_records_table').empty();
+            var tableDesign = "";
+//idgrn, issued_date, totoal_amount, paid_amount, balance, issued_by, discount, suplierId, idsupplier, name, contactno, address, active_status, company_discount
+            for (var i = 0; i < data.length; i++) {
+                tableDesign += "<tr>";
+                tableDesign += "<td>" + data[i].idgrn + "<input type='hidden' value='" + data[i].issued_by + "' id='" + data[i].idgrn + "'/></td>";
+                tableDesign += "<td>" + data[i].issued_date + "</td>";
+                tableDesign += "<td>" + parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2) + "</td>";
+                tableDesign += "<td>" + parseFloat(Math.round(data[i].paid_amount * 100) / 100).toFixed(2) + "</td>";
+                tableDesign += "<td>" + parseFloat(Math.round(data[i].balance * 100) / 100).toFixed(2) + "</td>";
+                tableDesign += "<td>" + data[i].name + "</td>";
+                tableDesign += "<td class='text-center'><button class='btn btn-default btn-primary' data-toggle='modal' data-target='#grn_products' onclick='loadGRNProducts(" + data[i].idgrn + ")'>More Details</button></td>";
+
+                tableDesign += "</tr>";
+
+            }
+
+
+            $('#grn_records_table').append(tableDesign);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+
+}
+
+function loadGRNProducts(val) {
+
+    $.ajax({
+        type: "POST",
+        url: './DAO/load_grn_products.php',
+        data: {
+            grnid: val
+        },
+        dataType: 'JSON',
+        success: function(data) {
+
+            var tableDesign = "";
+//idgrnregistry, qty, unit_price, idgrn, idproduct, idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price
+            for (var i = 0; i < data.length; i++) {
+                tableDesign += "<tr>";
+                tableDesign += "<td>" + data[i].itemcode + "</td>";
+                tableDesign += "<td>" + data[i].description + "</td>";
+                tableDesign += "<td>" + data[i].qty + "</td>";
+                tableDesign += "<td>" + parseFloat(Math.round(data[i].unit_price * 100) / 100).toFixed(2) + "</td>";
+                tableDesign += "</tr>";
+            }
+            var variableName = "#" + val;
+            $('#grn_records_issued').html("Issued By: " + $(variableName).val());
+            $('#grn_records_ref').html("GRN ID: " + val);
+            $('#grn_records_products').append(tableDesign);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function searchGRNRecords() {
+    console.log($('#search_param').val());
+    console.log($('#search_val').val());
 }

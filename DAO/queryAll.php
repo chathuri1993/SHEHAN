@@ -16,8 +16,37 @@ function getDetails($tableName, $columnName, $order) {
 
 function geProducts($key) {
     global $DB;
-
     $details = $DB->query("SELECT * FROM product as p inner join supplier as s on p.idsupplier=s.idsupplier where p.idproduct='$key' ;");
+    return $details;
+}
+
+function getGRNRecords($grn_date) {
+    if ($grn_date == null) {
+        global $DB;
+        $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier");
+        return $details;
+    } else {
+        global $DB;
+        $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where issued_date LIKE '%$grn_date%'");
+        return $details;
+    }
+}
+
+function getGRNRecords_Filter($column, $val) {
+    global $DB;
+    $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where $column LIKE '%$val%' ");
+    return $details;
+}
+
+function getGRNRecords_FilterWithDate($column, $val, $grn_date) {
+    global $DB;
+    $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where $column LIKE '%$val%' and issued_date LIKE '%$grn_date%'");
+    return $details;
+}
+
+function getGRNProductRecords($key) {
+    global $DB;
+    $details = $DB->query("SELECT * FROM grnregistry g inner join product p on g.idproduct=p.idproduct where idgrn='$key'");
     return $details;
 }
 
@@ -78,9 +107,9 @@ function active_status($table, $column, $colval, $key, $value) {
     }
 }
 
-function save_grn($idgrn, $total_amount, $paid_amount, $balance, $issued_by, $discount) {
+function save_grn($idgrn, $total_amount, $paid_amount, $balance, $issued_by, $discount, $supid) {
     global $DB;
-    $dataArray = array("idgrn" => "$idgrn", "totoal_amount" => "$total_amount", "paid_amount" => "$paid_amount", "balance" => "$balance", "issued_by" => "$issued_by", "discount" => "$discount");
+    $dataArray = array("idgrn" => "$idgrn", "totoal_amount" => "$total_amount", "paid_amount" => "$paid_amount", "balance" => "$balance", "issued_by" => "$issued_by", "discount" => "$discount", "suplierId" => "$supid");
     $status = $DB->insert("grn", $dataArray);
     if ($status == TRUE) {
         return "1";

@@ -36,28 +36,51 @@ function clearElement(val) {
     $(val).html("");
 }
 function addRow() {
+    var readyStatus = "true";
     var qty = $("#grn_qty").val();
     var unit_price = $("#grn_unit_price").val();
     var discount = $("#grn_discount").val();
     var products = $('#grn_products option:selected').html();
     var productid = $('#grn_products option:selected').val();
+    
+    if (unit_price == "") {
+        $('#grn_unit_price_span').html("Please fill");
+        readyStatus = "false";
+    }
+    if (discount == "") {
+        $('#grn_discount_span').html("Please fill");
+        readyStatus = "false";
+    }
+    if (productid == undefined) {
+        $('#grn_product_span').html("Please select requred data");
+        readyStatus = "false";
+    }
+    if (qty == "") {
+        $('#grn_qty_span').html("Please fill");
+        readyStatus = "false";
+    }
+    if (readyStatus == "true") {
+        var markup = "";
+        var price = (unit_price - ((unit_price * discount) / 100)) * qty;
+
+        markup += "<tr>";
+        markup += "<td><input type='checkbox' name='grn_status'/></td>";
+        markup += "<td>" + products + "</td>";
+        markup += "<td style='display:none;'>" + productid + "</td>";
+        markup += "<td>" + unit_price + "</td>";
+        markup += "<td>" + discount + "</td>";
+        markup += "<td>" + qty + "</td>";
+        markup += "<td class='grn_total'>" + parseFloat(Math.round(price * 100) / 100).toFixed(2) + "</td>";
+        markup += "</tr>";
+        $("#grn_table").append(markup);
+
+        sumOfColumns();
+        grn_add_clear();
+    }
+
+
 //    var products = $("#grn_products").text();
-    var markup = "";
-    var price = (unit_price - ((unit_price * discount) / 100)) * qty;
 
-    markup += "<tr>";
-    markup += "<td><input type='checkbox' name='grn_status'/></td>";
-    markup += "<td>" + products + "</td>";
-    markup += "<td style='display:none;'>" + productid + "</td>";
-    markup += "<td>" + unit_price + "</td>";
-    markup += "<td>" + discount + "</td>";
-    markup += "<td>" + qty + "</td>";
-    markup += "<td class='grn_total'>" + parseFloat(price).toFixed(2) + "</td>";
-    markup += "</tr>";
-    $("#grn_table").append(markup);
-
-    sumOfColumns();
-    grn_add_clear();
 }
 
 function deleteRow() {
@@ -76,8 +99,8 @@ function sumOfColumns() {
 
 
     $(".grn_total").each(function() {
-        totalPrice += parseInt($(this).html());
-        $("#grn_total_amount").val(parseFloat(totalPrice).toFixed(2));
+        totalPrice += parseFloat($(this).html());
+        $("#grn_total_amount").val(parseFloat(Math.round(totalPrice * 100) / 100).toFixed(2));
     });
 }
 
@@ -94,14 +117,14 @@ function grn_clear() {
     $('#grn_paid_amount').val("");
     $('#grn_balance').val("0.00");
     $('#grn_table').empty();
-    
+
     generateId();
     loadSupplierNames();
-      
+
 
 }
 function grn_add_clear() {
-    $('select#grn_products').val("0");
+//    $('select#grn_products').val("0");
     $('#grn_qty').val("1");
     $('#grn_unit_price').val("");
     $('#grn_discount').val("");
@@ -114,9 +137,10 @@ $(document).keyup(function(e) {
         if (e.which == 13) {
             var total = $('#grn_total_amount').val();
             var paid = $('#grn_paid_amount').val();
-            var balance =  parseFloat(paid)-parseFloat(total) ; 
-            $("#grn_paid_amount").val(parseFloat(paid).toFixed(2));
-            $("#grn_balance").val(parseFloat(balance).toFixed(2)); 
+            var balance = parseFloat(Math.round(paid * 100) / 100).toFixed(2) - parseFloat(Math.round(total * 100) / 100).toFixed(2);
+            $("#grn_paid_amount").val(parseFloat(Math.round(paid * 100) / 100).toFixed(2));
+            $("#grn_balance").val(parseFloat(Math.round(balance * 100) / 100).toFixed(2));
         }
     });
-});
+}
+);

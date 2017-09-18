@@ -18,7 +18,7 @@ $issued_by = "Chathuri";
 $discount ="0";
 
 $status2="";
-$status = save_grn($grn_id, $grn_total_amount, $grn_paid_amount, $grn_balance, $issued_by, $discount);
+$status = save_grn($grn_id, $grn_total_amount, $grn_paid_amount, $grn_balance, $issued_by, $discount,$grn_supplier_name);
 if ($status == "1") {
     $data = json_decode($grn_product, true);
     $sports = array();

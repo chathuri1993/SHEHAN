@@ -66,8 +66,8 @@ include './metaLibs.php';
                 <label class="valign">Product</label>
             </div>
             <div class="col-lg-7 col-md-5 col-sm-7 col-xs-12">
-                <select id="grn_products" class="form-control" onchange="loadProductDetails(this.value)">
-                    <option value="0" selected="true" disabled="disabled">Please select product</option>
+                     <span id="grn_product_span" class="spanMsg"></span>
+                <select onfocus="clearElement('#grn_product_span')" id="grn_products" class="form-control"  onclick="loadProductDetails(this.value)">
                 </select>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-3 "></div>
@@ -78,21 +78,24 @@ include './metaLibs.php';
                 <label class="valign">Qty</label>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                <span id="grn_span" class="spanMsg"></span>
-                <input type="number" class="form-control" required placeholder="1" value="1" id="grn_qty" min="1" name="grnid" aria-describedby="basic-addon1">
+                <span id="grn_qty_span" class="spanMsg"></span>
+                <input onfocus="clearElement('#grn_qty_span')" type="number" class="form-control" required placeholder="1" value="1" id="grn_qty" min="1" name="grnid" aria-describedby="basic-addon1">
             </div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                 <label class="valign">Unit Price</label>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">         
-                <input type="number" class="form-control" required placeholder="10000.00" id="grn_unit_price" min="1" name="grnid" aria-describedby="basic-addon1">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">   
+                <span id="grn_unit_price_span" class="spanMsg"></span>
+                <input onfocus="clearElement('#grn_unit_price_span')" type="number" class="form-control" required placeholder="10000.00" id="grn_unit_price" min="1" name="grnid" aria-describedby="basic-addon1">
             </div>
-            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">         
+            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">  
+                
                 <label class="valign">Discount(%)</label>
             </div>
             <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">     
                 <div class="input-group">
-                    <input type="text" class="form-control" required placeholder="50%" max="100" id="grn_discount" min="1" name="grnid" aria-describedby="basic-addon1">
+                     <span id="grn_discount_span" class="spanMsg"></span>
+                    <input onfocus="clearElement('#grn_discount_span')" type="text" class="form-control" required placeholder="50%" max="100" id="grn_discount" min="1" name="grnid" aria-describedby="basic-addon1">
                     <input type="hidden" id="grn_discount_hidden">
                 </div>
             </div>
@@ -109,7 +112,8 @@ include './metaLibs.php';
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12">
                 <span class="label label-default pull-right">Please tick on check box to remove products from the table</span>
-                <table class="table table-hover table-bordered table-responsive" id="grn_product_table">
+                 
+                <table class="table table-hover table-bordered" id="grn_product_table">
                     <thead>
                         <tr>
                             <th>Check</th>
@@ -122,11 +126,9 @@ include './metaLibs.php';
 
                         </tr>
                     </thead>
-                    <tbody id="grn_table">
-
-
-                    </tbody>
+                    <tbody id="grn_table"></tbody>
                 </table> 
+                
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
@@ -154,7 +156,8 @@ include './metaLibs.php';
                 <h4><span class="label label-primary pull-right">Paid (Rs.)</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                <input type="number" class="form-control pull-right amountstyles" min="0" required id="grn_paid_amount" name="grnpaidamount">
+                   <span id="grn_paid_amount_span" class="spanMsg"></span>
+                <input onfocus="clearElement('#grn_paid_amount_span')" type="number" class="form-control pull-right amountstyles" min="0" required id="grn_paid_amount" name="grnpaidamount">
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
@@ -164,6 +167,7 @@ include './metaLibs.php';
                 <h4><span class="label label-primary pull-right">Balance (Rs.)</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+              
                 <input type="number" disabled="" class="form-control pull-right amountstyles" min="0" required id="grn_balance" name="grnbalance">
                 <!--<h2 class="pull-right"><span id="grn_balance" name="grnbalance">0.00</span></h2>-->
             </div>
