@@ -20,6 +20,7 @@
                             <li><a href="supplierRegistration.php">Supplier Management</a></li>
                             <li><a href="grn.php">GRN</a></li>
                             <li><a href="grnRecords.php">GRN Records</a></li>
+                            <li><a href="grnTrans.php">GRN Transctions</a></li>
                         </ul>
                     </li>
                         <li class="dropdown">

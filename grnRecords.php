@@ -1,14 +1,14 @@
 <?php
 include './metaLibs.php';
 ?>
-<title>Supplier Registration</title>
+<title>GRN Records</title>
 <style>
     .es-list { max-height: 160px !important; }
 </style>
 <script>
     $(document).ready(function() {
 
-        loadGRNRecords();
+//        loadGRNRecords();
     });
 
 </script>
@@ -44,6 +44,23 @@ include './metaLibs.php';
         <div class="row">
             <div class="col-lg-12 text-center h2">GRN Records</div>
         </div>
+
+        <div class="row rowPadding">
+            <div class="col-lg-5 col-md-3 col-sm-3 col-xs-2"></div>
+            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-8">
+                <form method="post">
+                    <div class="form-group"> <!-- Date input -->
+                        <!--<label class="control-label" for="date">Date</label>-->
+                        <input class="form-control" id="date" name="date" onchange="loadGRNRecords()" placeholder="YYYY-MM-DD" type="text"/>
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-lg-5 col-md-3 col-sm-3 col-xs-2"> 
+                <button onclick="setGRNHiddenValue()" class="btn btn-info" type="button">ALL <span class="glyphicon glyphicon-refresh"></span>
+                </button><input type="hidden" id="all_grnrecords" value="0"/></div>
+        </div>
         <div class="row rowPadding">
             <div class="col-lg-4 col-md-1 col-sm-2"></div>
             <div class="col-lg-4 col-md-10 col-sm-8 col-xs-12">
@@ -70,18 +87,6 @@ include './metaLibs.php';
             <div class="col-lg-4 col-md-1 col-sm-2 "></div>
         </div>
 
-        <div class="row rowPadding">
-            <div class="col-lg-5 col-md-3 col-sm-3 col-xs-2"></div>
-            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-8">
-                <form method="post">
-                    <div class="form-group"> <!-- Date input -->
-                        <!--<label class="control-label" for="date">Date</label>-->
-                        <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-5 col-md-3 col-sm-3 col-xs-2"></div>
-        </div>
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-1 col-sm-2"></div>
             <div class="col-lg-8 col-md-10 col-sm-8 col-xs-12">
@@ -114,6 +119,19 @@ include './metaLibs.php';
             </div>
             <div class="col-lg-1 col-md-1 col-sm-1"></div>
         </div>
+        <div class="row rowPadding">
+            <div class="col-lg-4 col-md-3 col-sm-2 col-xs-1"></div>
+            <div class="col-lg-4 col-md-6 col-sm-8 col-xs-10">
+                <div id="content-wrapper">
+                    <div class="inner clearfix"> 
+                        <div class="text-center">
+                            <ul id="pagination-demo" class="pagination-sm"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-3 col-sm-2 col-xs-1"></div>
+        </div>
 
 
         <!--GRN Records Products--> 
@@ -135,14 +153,14 @@ include './metaLibs.php';
                                         <th>Item</th>
                                         <th>Qty</th>
                                         <th>Unit Price</th>
-                                         
+
                                     </tr>
                                 </thead>
                                 <tbody id="grn_records_products"></tbody>
                             </table> 
-                             <h5 class="modal-title pull-right" id="grn_records_issued"></h5>
+                            <h5 class="modal-title pull-right" id="grn_records_issued"></h5>
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -155,29 +173,55 @@ include './metaLibs.php';
     </div>
     <script src="js/shehan.main.js"></script>
     <script>
-    $(document).ready(function(e) {
+                            $(document).ready(function(e) {
 
+                                $('#pagination-demo').twbsPagination({
+                                    totalPages: "5",
+                                    visiblePages: "2",
+                                    onPageClick: function(event, page) {
 
-        var date_input = $('input[name="date"]'); //our date input has the name "date"
-        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-        var options = {
-            format: 'yyyy-mm-dd',
-            container: container,
-            todayHighlight: true,
-            autoclose: true,
-        };
-        date_input.datepicker(options);
+                                        loadGRNRecords(page);
 
-        $('.search-panel .dropdown-menu').find('a').click(function(e) {
-            e.preventDefault();
-            var param = $(this).attr("href").replace("#", "");
-        
-            var concept = $(this).text();
-          
-            $('.search-panel span#search_concept').text(concept);
-            $('.input-group #search_param').val(param);
-        });
-    });
+                                    }
+                                });
+
+//                                $('#pagination-demo').twbsPagination({
+//                                    totalPages: "5",
+//                                    visiblePages: "3",
+//                                    onPageClick: function(event, page) {
+//                                        $('#page-content').text('Page ' + page);
+//                                    }
+//                                });
+//                                var d = new Date();
+//
+//                                var month = d.getMonth() + 1;
+//                                var day = d.getDate();
+//
+//                                var output = d.getFullYear() + '-' +
+//                                        (month < 10 ? '0' : '') + month + '-' +
+//                                        (day < 10 ? '0' : '') + day;
+//
+//                                $('input[name="date"]').val(output);
+                                var date_input = $('input[name="date"]'); //our date input has the name "date"
+                                var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+                                var options = {
+                                    format: 'yyyy-mm-dd',
+                                    container: container,
+                                    todayHighlight: true,
+                                    autoclose: true,
+                                };
+                                date_input.datepicker(options);
+
+                                $('.search-panel .dropdown-menu').find('a').click(function(e) {
+                                    e.preventDefault();
+                                    var param = $(this).attr("href").replace("#", "");
+
+                                    var concept = $(this).text();
+
+                                    $('.search-panel span#search_concept').text(concept);
+                                    $('.input-group #search_param').val(param);
+                                });
+                            });
     </script>
 </body>
 </html>

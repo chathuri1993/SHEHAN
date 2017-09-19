@@ -20,22 +20,16 @@ function geProducts($key) {
     return $details;
 }
 
-function getGRNRecords($grn_date) {
-    if ($grn_date == null) {
+function getGRNRecords($grn_date, $all_load) {
+    if ($all_load == "all") {
         global $DB;
-        $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier");
+        $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier order by issued_date desc");
         return $details;
     } else {
         global $DB;
-        $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where issued_date LIKE '%$grn_date%'");
+        $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where issued_date LIKE '%$grn_date%' order by issued_date desc");
         return $details;
     }
-}
-
-function getGRNRecords_Filter($column, $val) {
-    global $DB;
-    $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where $column LIKE '%$val%' ");
-    return $details;
 }
 
 function getGRNRecords_FilterWithDate($column, $val, $grn_date) {
@@ -44,9 +38,32 @@ function getGRNRecords_FilterWithDate($column, $val, $grn_date) {
     return $details;
 }
 
+function getGRNTrans($grn_From, $grn_To) {
+    global $DB;
+//     $details = $DB->query("SELECT * FROM grn gr inner join grnregistry g on gr.idgrn=g.idgrn inner join product p on g.idproduct=p.idproduct inner join supplier s on gr.suplierId=s.idsupplier where date(issued_date) between '$grn_From' and '$grn_To'");
+
+    $details = $DB->query("SELECT * FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where date(issued_date) between '$grn_From' and '$grn_To'");
+    return $details;
+}
+
+function getGRNTransTotal($grn_From, $grn_To) {
+    global $DB;
+    $details = $DB->query("SELECT sum(totoal_amount) as co FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where date(issued_date) between '$grn_From' and '$grn_To'");
+      foreach ($details as $value) {
+        $grnTot = $value["co"];
+    }
+    return $grnTot;
+}
+
 function getGRNProductRecords($key) {
     global $DB;
     $details = $DB->query("SELECT * FROM grnregistry g inner join product p on g.idproduct=p.idproduct where idgrn='$key'");
+    return $details;
+}
+
+function getGRNPrint($key) {
+    global $DB;
+    $details = $DB->query("SELECT * FROM grn gr inner join grnregistry g on gr.idgrn=g.idgrn inner join product p on g.idproduct=p.idproduct inner join supplier s on gr.suplierId=s.idsupplier where gr.idgrn='$key'");
     return $details;
 }
 
@@ -124,7 +141,20 @@ function save_grnRegistry($idgrn, $qty, $unit_price, $idproduct) {
     $dataArray = array("idgrnregistry" => 0, "qty" => "$qty", "unit_price" => "$unit_price", "idgrn" => "$idgrn", "idproduct" => "$idproduct");
     $status = $DB->insert("grnregistry", $dataArray);
     if ($status == TRUE) {
-        return "Success";
+        $productCount = '';
+        $details = $DB->query("SELECT available_qty as pc FROM product WHERE idproduct='$idproduct'");
+        foreach ($details as $value) {
+            $productCount = $value["pc"];
+        }
+        $totalProduct = $productCount + $qty;
+        $dataArray2 = array("available_qty" => $totalProduct);
+        $DB->where("idproduct", $idproduct);
+        $status2 = $DB->update("product", $dataArray2);
+        if ($status2 == TRUE) {
+            return "Success";
+        } else {
+            return "Error";
+        }
     } else {
         return "Error";
     }

@@ -42,7 +42,7 @@ function addRow() {
     var discount = $("#grn_discount").val();
     var products = $('#grn_products option:selected').html();
     var productid = $('#grn_products option:selected').val();
-    
+
     if (unit_price == "") {
         $('#grn_unit_price_span').html("Please fill");
         readyStatus = "false";
@@ -60,24 +60,46 @@ function addRow() {
         readyStatus = "false";
     }
     if (readyStatus == "true") {
-        var markup = "";
-        var price = (unit_price - ((unit_price * discount) / 100)) * qty;
 
-        markup += "<tr>";
-        markup += "<td><input type='checkbox' name='grn_status'/></td>";
-        markup += "<td>" + products + "</td>";
-        markup += "<td style='display:none;'>" + productid + "</td>";
-        markup += "<td>" + unit_price + "</td>";
-        markup += "<td>" + discount + "</td>";
-        markup += "<td>" + qty + "</td>";
-        markup += "<td class='grn_total'>" + parseFloat(Math.round(price * 100) / 100).toFixed(2) + "</td>";
-        markup += "</tr>";
-        $("#grn_table").append(markup);
+        var array = [];
+        var headers = [];
+        var txt = "";
+        var status = "false";
 
-        sumOfColumns();
-        grn_add_clear();
+        $('#grn_product_table tr').has('td').each(function() {
+            var arrayItem = {};
+            $('td', $(this)).each(function(index, item) {
+                if (index == 1) {
+                    if ($(item).html() == products) {
+                        status = "true";
+                    }
+                    console.log($(item).html());
+                }
+
+            });
+        });
+        console.log(status);
+        if (status == "false") {
+            var markup = "";
+            var price = (unit_price - ((unit_price * discount) / 100)) * qty;
+
+            markup += "<tr>";
+            markup += "<td><input type='checkbox' name='grn_status'/></td>";
+            markup += "<td>" + products + "</td>";
+            markup += "<td style='display:none;'>" + productid + "</td>";
+            markup += "<td>" + unit_price + "</td>";
+            markup += "<td>" + discount + "</td>";
+            markup += "<td>" + qty + "</td>";
+            markup += "<td class='grn_total'>" + parseFloat(Math.round(price * 100) / 100).toFixed(2) + "</td>";
+            markup += "</tr>";
+            $("#grn_table").append(markup);
+
+            sumOfColumns();
+            grn_add_clear();
+        } else {
+           alert("Product already exist");  
+        }
     }
-
 
 //    var products = $("#grn_products").text();
 
@@ -144,3 +166,7 @@ $(document).keyup(function(e) {
     });
 }
 );
+
+function printPage() {
+    window.print();
+}

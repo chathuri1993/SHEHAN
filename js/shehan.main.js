@@ -333,8 +333,46 @@ function save_Grn() {
             },
             dataType: 'JSON',
             success: function(data) {
+
+                // Success unoth print wenawa **************
                 if (data == "1") {
                     $('#grn_status').html("<div class='alert alert-success'><strong>Success!</strong></div>");
+                    $.ajax({
+                        type: "POST",
+                        url: './DAO/print_grn.php',
+                        data: {
+                            grnid: grinid
+                        },
+                        dataType: 'JSON',
+                        success: function(data) {
+                            var tableDesign = "";
+//idgrnregistry, qty, unit_price, idgrn, idproduct, idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price
+
+                            for (var i = 0; i < data.length; i++) {
+                                tableDesign += "<tr>";
+                                tableDesign += "<td>" + data[i].itemcode + "</td>";
+                                tableDesign += "<td>" + data[i].description + "</td>";
+                                tableDesign += "<td>" + data[i].qty + "</td>";
+                                tableDesign += "<td>" + parseFloat(Math.round(data[i].unit_price * 100) / 100).toFixed(2) + "</td>";
+                                tableDesign += "</tr>";
+
+                                $('#grn_records_issued').html("Issued By: " + data[i].issued_by);
+                                $('#grn_records_ref').html("GRN ID: " + grinid);
+                                $('#grn_records_tot').html(parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2));
+                                $('#grn_records_paid').html(parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2));
+                                $('#grn_records_balance').html(parseFloat(Math.round(data[i].balance * 100) / 100).toFixed(2));
+                                $('#grn_records_sup').html("Supplier: " + data[i].name);
+                            }
+
+                            $('#grn_print_products').append(tableDesign);
+                            $('#grn_print').modal('show');
+                        },
+                        error: function(e) {
+                            console.log(e);
+
+                        }
+                    });
+
                     grn_clear();
 
                 } else {
@@ -394,41 +432,81 @@ function generateId() {
 
 //********************************************* GRN Records
 
-function loadGRNRecords() {
+function setGRNHiddenValue() {
+    $('#all_grnrecords').val("all");
+    loadGRNRecords();
+}
+function loadGRNRecords(page) {
 
     var search_param = $('#search_param').val();
     var search_val = $('#search_val').val();
     var grn_date = $('#date').val();
-    
+    var all = $('#all_grnrecords').val();
+
     $.ajax({
         type: "POST",
         url: './DAO/load_grn.php',
         data: {
             search_param: search_param,
             search_val: search_val,
-            grn_date:grn_date
+            grn_date: grn_date,
+            all_load: all
         },
         dataType: 'JSON',
         success: function(data) {
-            $('#grn_records_table').empty();
-            var tableDesign = "";
+            if (data.length > 0) {
+                if (page == undefined) {
+                    page = 1;
+                }
+                console.log(data.length);
+                var tableDesign = "";
+                var pageId = 1;
+                var paginationCount = 10;
+                var dataCount = data.length / paginationCount;
+
+                var totalpages = Math.ceil(dataCount);
+                $('#date').on("click", function() {
+                    $('#pagination-demo').on("pageClick");
+                });
+                $('#pagination-demo').twbsPagination('destroy');
+                $('#pagination-demo').twbsPagination({
+                    totalPages: totalpages,
+                    visiblePages: totalpages,
+                    onPageClick: function(event, page) {
+
+                        pageId = page * paginationCount;
+                        if (data.length <= pageId) {
+                            pageId = data.length;
+                        }
+
+                        $('#grn_records_table').empty();
+                        var tableDesign = "";
 //idgrn, issued_date, totoal_amount, paid_amount, balance, issued_by, discount, suplierId, idsupplier, name, contactno, address, active_status, company_discount
-            for (var i = 0; i < data.length; i++) {
-                tableDesign += "<tr>";
-                tableDesign += "<td>" + data[i].idgrn + "<input type='hidden' value='" + data[i].issued_by + "' id='" + data[i].idgrn + "'/></td>";
-                tableDesign += "<td>" + data[i].issued_date + "</td>";
-                tableDesign += "<td>" + parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2) + "</td>";
-                tableDesign += "<td>" + parseFloat(Math.round(data[i].paid_amount * 100) / 100).toFixed(2) + "</td>";
-                tableDesign += "<td>" + parseFloat(Math.round(data[i].balance * 100) / 100).toFixed(2) + "</td>";
-                tableDesign += "<td>" + data[i].name + "</td>";
-                tableDesign += "<td class='text-center'><button class='btn btn-default btn-primary' data-toggle='modal' data-target='#grn_products' onclick='loadGRNProducts(" + data[i].idgrn + ")'>More Details</button></td>";
+                        for (var i = (page - 1) * paginationCount; i < pageId; i++) {
+                            tableDesign += "<tr>";
+                            tableDesign += "<td>" + data[i].idgrn + "<input type='hidden' value='" + data[i].issued_by + "' id='" + data[i].idgrn + "'/></td>";
+                            tableDesign += "<td>" + data[i].issued_date + "</td>";
+                            tableDesign += "<td>" + parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2) + "</td>";
+                            tableDesign += "<td>" + parseFloat(Math.round(data[i].paid_amount * 100) / 100).toFixed(2) + "</td>";
+                            tableDesign += "<td>" + parseFloat(Math.round(data[i].balance * 100) / 100).toFixed(2) + "</td>";
+                            tableDesign += "<td>" + data[i].name + "</td>";
+                            tableDesign += "<td class='text-center'><button class='btn btn-default btn-primary' data-toggle='modal' data-target='#grn_products' onclick='loadGRNProducts(" + data[i].idgrn + ")'>More Details</button></td>";
+                            tableDesign += "</tr>";
 
-                tableDesign += "</tr>";
+                        }
+                        if ($('#all_grnrecords').val() == "all") {
+                            $('#all_grnrecords').val("0");
+                            $('#date').val("");
+                        }
+                        $('#grn_records_table').append(tableDesign);
 
+                    }
+
+                });
+            } else {
+                $('#grn_records_table').empty();
             }
 
-
-            $('#grn_records_table').append(tableDesign);
         },
         error: function(e) {
             console.log(e);
@@ -450,6 +528,7 @@ function loadGRNProducts(val) {
 
             var tableDesign = "";
 //idgrnregistry, qty, unit_price, idgrn, idproduct, idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price
+
             for (var i = 0; i < data.length; i++) {
                 tableDesign += "<tr>";
                 tableDesign += "<td>" + data[i].itemcode + "</td>";
@@ -457,6 +536,7 @@ function loadGRNProducts(val) {
                 tableDesign += "<td>" + data[i].qty + "</td>";
                 tableDesign += "<td>" + parseFloat(Math.round(data[i].unit_price * 100) / 100).toFixed(2) + "</td>";
                 tableDesign += "</tr>";
+
             }
             var variableName = "#" + val;
             $('#grn_records_issued').html("Issued By: " + $(variableName).val());
@@ -472,4 +552,63 @@ function loadGRNProducts(val) {
 function searchGRNRecords() {
     console.log($('#search_param').val());
     console.log($('#search_val').val());
+}
+
+//********************************************* GRN Transactions
+
+function loadGRNTrans() {
+
+    var grn_From = $('#dateFrom').val();
+    var grn_To = $('#dateTo').val();
+
+    $.ajax({
+        type: "POST",
+        url: './DAO/load_grn_trans.php',
+        data: {
+            grn_From: grn_From,
+            grn_To: grn_To
+        },
+        dataType: 'JSON',
+        success: function(data) {
+
+            if (data.length > 0) { 
+                var tableDesign = "";
+                var tableDesign2 = "";
+                $('#grn_trans_table').empty();
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    tableDesign += "<tr>";
+                    tableDesign += "<td>" + data[i].idgrn + "<input type='hidden' value='" + data[i].issued_by + "' id='" + data[i].idgrn + "'/></td>";
+                    tableDesign += "<td>" + data[i].issued_date + "</td>";
+                    tableDesign += "<td>" + parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2) + "</td>";
+//                    tableDesign += "<td>" + parseFloat(Math.round(data[i].paid_amount * 100) / 100).toFixed(2) + "</td>";
+//                    tableDesign += "<td>" + parseFloat(Math.round(data[i].balance * 100) / 100).toFixed(2) + "</td>";
+                    tableDesign += "<td>" + data[i].name + "</td>";
+//                    tableDesign += "<td class='text-center'><table class='table' id='" + data[i].idgrn + "'>'" + tableDesign2 + "'</table></td>";
+                    tableDesign += "</tr>";
+                }
+                $.ajax({
+                    type: "POST",
+                    url: './DAO/load_grn_total.php',
+                    data: {
+                        grn_From: grn_From,
+                        grn_To: grn_To
+                    },
+                    dataType: 'JSON',
+                    success: function(data) { 
+                        
+                        $('#grn_total').html("Total (Rs): "+parseFloat(Math.round(data * 100) / 100).toFixed(2) );
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                });
+            }
+            $('#grn_trans_table').append(tableDesign);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+
 }
