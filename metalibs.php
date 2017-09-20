@@ -10,8 +10,16 @@ and open the template in the editor.
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/boot_style.css" rel="stylesheet">  
+        <link href="css/style.css" rel="stylesheet">  
         <link href="css/bootstrap.min.css" rel="stylesheet">  
+        <link href="css/bootstrap-datepicker3.css" rel="stylesheet">  
+        <link href="css/jquery-editable-select.min.css" rel="stylesheet">  
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>  
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+        <script src="js/shehan.front.js"></script>  
+        <script src="js/jquery-editable-select.min.js"></script> 
+        <script src="js/bootstrap-datepicker.min.js"></script> 
+        <script src="js/jquery.twbsPagination.js"></script> 
+        
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">--> 
 

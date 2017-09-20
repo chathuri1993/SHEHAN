@@ -1,8 +1,6 @@
- <div class="row">
-        <div class="col-lg-12 text-center"><img src="images/logo/shehan.svg"  width="300px" height="100px"/></div>
-    </div>
-    <nav class="navbar navbar-default">
-
+ 
+    <nav class="navbar navbar-default" id="pagetop">
+        <div style="background-color: #ffffff" class="col-lg-12 text-center"><img src="images/logo/shehan.svg"  width="300px" height="100px"/></div>
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -19,15 +17,16 @@
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplier Management <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <li><a href="supplierRegistration.php">Supplier Management</a></li>
+                            <li><a href="grn.php">GRN</a></li>
+                            <li><a href="grnRecords.php">GRN Records</a></li>
+                            <li><a href="grnTrans.php">GRN Transctions</a></li>
                         </ul>
                     </li>
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Product Management <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
+                            <li><a href="productReg.php">Product Registration</a></li>
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
                         </ul>
