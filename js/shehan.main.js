@@ -726,7 +726,7 @@ function item_Table(data, datalength, startval) {
     var tableDesign = "";
 //idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price, activestatus, idcategory, name, idsupplier, name, contactno, address, active_status, company_discount
     for (var i = startval; i < datalength; i++) {
-        if(data[i].available_qty>0){
+        if(data[i].available_qty> data[i].reorder_level ){
             
             tableDesign += "<tr>";
         }else{
