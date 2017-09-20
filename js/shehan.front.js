@@ -136,7 +136,7 @@ function addRow() {
             sumOfColumns();
             grn_add_clear();
         } else {
-            alert("Product already exist");
+            alert("Product already exist. Please remove exixting value.");
         }
     }
 
@@ -150,6 +150,7 @@ function deleteRow() {
             $(this).parents("tr").remove();
         }
     });
+     $("#grn_total_amount").val("0.00");
     sumOfColumns();
     grn_add_clear();
 }
