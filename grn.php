@@ -4,6 +4,11 @@ include './metaLibs.php';
 <title>GRN</title>
 <style>
     .es-list { max-height: 160px !important; }
+    @page {
+        width:  228.6mm;
+        height: 125mm;
+        margin: 0;
+    }
     @media print {
         body * {
             visibility: hidden;
@@ -12,9 +17,15 @@ include './metaLibs.php';
             visibility: visible;
         }
         #grn-print-area{
-            position: absolute;
-            left: 0;
-            top: 0;
+            width: 200.6mm;
+            height: 139.7mm;
+            padding: 15mm;
+            margin:8mm auto;
+            border: 1px #FFFFFF solid;
+            border-radius: 5px;
+            background: white;
+
+
         }
     }
 </style>
@@ -200,9 +211,6 @@ include './metaLibs.php';
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
                 <div class="modal-body" id="grn-print-area">
                     <div> 
                         <div style="background-color: #ffffff" class="col-lg-12 text-center"><img src="images/logo/shehan.svg"  width="200px" height="100px"/></div>

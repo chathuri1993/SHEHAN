@@ -12,6 +12,16 @@ function sup_changeText() {
         scrollTop: $("#pagetop").offset().top + offset
     }, 500);
 }
+function product_changeText() {
+    $('#item_save').html("Update");
+    $('#item_action').val("update");
+    $("#item_code").prop('disabled', true);
+    var offset = 20; //Offset of 20px
+
+    $(' body,html').animate({
+        scrollTop: $("#pagetop").offset().top + offset
+    }, 500);
+}
 function sup_cancel() {
     $('#supplier_save').html("Save");
     $('#supplier_action').val("save");
@@ -20,9 +30,10 @@ function sup_cancel() {
     $('#supplier_address').val("");
     $('#supplier_name_key').val("");
     $('#supplier_status').empty();
-    $('#supplier_discount').empty();
+    $('#supplier_discount').val("");
 }
 function sup_clear() {
+     $("#item_code").prop('disabled', false);
     $('#supplier_save').html("Save");
     $('#supplier_action').val("save");
     $('#supplier_name').val("");
@@ -30,6 +41,34 @@ function sup_clear() {
     $('#supplier_address').val("");
     $('#supplier_name_key').val("");
     $('#supplier_discount').val("");
+
+}
+function item_cancel() {
+ $("#item_code").prop('disabled', false);
+    $('#item_save').html("Save");
+    $('#item_action').val("save");
+    $('#item_code').val("");
+    $('#item_des').val("");
+    $('#reorder_level').val("");
+    $('#item_unitprice').val("");
+    $('#item_category').val("0");
+    $('#item_supplier').val("0");
+    $('#item_id').val("0");
+    $('#item_name_key').val("");
+    $('#item_status').empty();
+
+}
+function item_clear() {
+       $('#item_save').html("Save");
+    $('#item_action').val("save");
+    $('#item_code').val("");
+    $('#item_des').val("");
+    $('#reorder_level').val("");
+    $('#item_unitprice').val("");
+    $('#item_category').val("0");
+    $('#item_supplier').val("0");
+    $('#item_name_key').val("");
+    $('#item_id').val("0");
 
 }
 function clearElement(val) {
@@ -97,7 +136,7 @@ function addRow() {
             sumOfColumns();
             grn_add_clear();
         } else {
-           alert("Product already exist");  
+            alert("Product already exist");
         }
     }
 

@@ -14,6 +14,36 @@ function getDetails($tableName, $columnName, $order) {
     return $details;
 }
 
+function getProductDetails() {
+    global $DB;
+
+    $details = $DB->query("SELECT *,c.name as cname, s.name as sname FROM product p inner join category c on p.idcategory=c.idcategory inner join supplier s on p.idsupplier=s.idsupplier order by p.idproduct desc;");
+    return $details;
+}
+
+function getProductDetailsWhere($column, $val) {
+    global $DB;
+    if ($column == "available_qty") {
+        $details = $DB->query("SELECT *,c.name as cname, s.name as sname FROM product p inner join category c on p.idcategory=c.idcategory "
+                . "inner join supplier s on p.idsupplier=s.idsupplier where  $column <= '$val' order by p.idproduct");
+    } else if ($column == "unit_price") {
+        $details = $DB->query("SELECT *,c.name as cname, s.name as sname FROM product p inner join category c on p.idcategory=c.idcategory "
+                . "inner join supplier s on p.idsupplier=s.idsupplier where  $column >= '$val' order by p.idproduct");
+    } else {
+        $details = $DB->query("SELECT *,c.name as cname, s.name as sname FROM product p inner join category c on p.idcategory=c.idcategory "
+                . "inner join supplier s on p.idsupplier=s.idsupplier where $column LIKE '%$val%' order by p.idproduct");
+    }
+
+    return $details;
+}
+
+function getProductDetailsLike($key) {
+    global $DB;
+
+    $details = $DB->query("SELECT *,c.name as cname, s.name as sname FROM product p inner join category c on p.idcategory=c.idcategory inner join supplier s on p.idsupplier=s.idsupplier order by p.idproduct where p.itemcode='$key'");
+    return $details;
+}
+
 function geProducts($key) {
     global $DB;
     $details = $DB->query("SELECT * FROM product as p inner join supplier as s on p.idsupplier=s.idsupplier where p.idproduct='$key' ;");
@@ -49,7 +79,7 @@ function getGRNTrans($grn_From, $grn_To) {
 function getGRNTransTotal($grn_From, $grn_To) {
     global $DB;
     $details = $DB->query("SELECT sum(totoal_amount) as co FROM grn as g inner join supplier as s on g.suplierId=s.idsupplier where date(issued_date) between '$grn_From' and '$grn_To'");
-      foreach ($details as $value) {
+    foreach ($details as $value) {
         $grnTot = $value["co"];
     }
     return $grnTot;
@@ -105,11 +135,30 @@ function saveSupplier($suppliername, $supplier_contactno, $supplier_address, $su
     }
 }
 
+function saveProduct($itemcode, $description, $reorderlevel, $category, $supplier, $unitprice) {
+    global $DB;
+//    idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price
+    $dataArray = array("idproduct" => 0, "itemcode" => "$itemcode", "description" => "$description", "reorder_level" => "$reorderlevel", "idcategory" => "$category", "idsupplier" => "$supplier", "unit_price" => "$unitprice");
+    $status = $DB->insert("product", $dataArray);
+    if ($status == TRUE) {
+        return "Success";
+    } else {
+        return "Error";
+    }
+}
+
 function updateSupplier($suppliername, $supplier_contactno, $supplier_address, $id, $supplier_discount) {
     global $DB;
     $dataArray = array("name" => "$suppliername", "contactno" => "$supplier_contactno", "address" => "$supplier_address", "company_discount" => "$supplier_discount");
     $DB->where("idsupplier", $id);
     $DB->update("supplier", $dataArray);
+}
+
+function updateProduct($description, $reorderlevel, $category, $supplier, $unitprice, $itemid) {
+    global $DB;
+    $dataArray = array("description" => "$description", "reorder_level" => "$reorderlevel", "idcategory" => "$category", "idsupplier" => "$supplier", "unit_price" => "$unitprice");
+    $DB->where("idproduct", $itemid);
+    $DB->update("product", $dataArray);
 }
 
 function active_status($table, $column, $colval, $key, $value) {

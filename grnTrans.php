@@ -4,6 +4,10 @@ include './metaLibs.php';
 <title>GRN Records</title>
 <style>
     .es-list { max-height: 160px !important; }
+    @page {
+        size: A4;
+        margin: 0;
+    }
     @media print {
         body * {
             visibility: hidden;
@@ -12,9 +16,24 @@ include './metaLibs.php';
             visibility: visible;
         }
         #grn_all_trans{
-            position: absolute;
-            left: 0;
-            top: 0;
+            width: 210mm;
+            height: 257mm;
+            padding: 15mm;
+            margin:8mm auto;
+            border: 1px #D3D3D3 solid;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);       
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial; 
+            /*            position: absolute;
+                        left: 0;
+                        top: 0;*/
         }
 
     }

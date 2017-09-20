@@ -124,7 +124,6 @@ function loadSupFormData(val) {
 function searchSupplier() {
     $('#supplier_status').empty();
     var sup_name_key = $('#supplier_name_key').val();
-    console.log(sup_name_key);
     $.ajax({
         type: "POST",
         url: './DAO/search_Supplier.php',
@@ -148,9 +147,9 @@ function active_status_supplier(id, status) {
     $('#supplier_status').empty();
     var status_word = "";
     if (status == 0) {
-        status_word = "active";
-    } else {
         status_word = "block";
+    } else {
+        status_word = "active";
     }
     if (confirm('Are you sure you want to ' + status_word + ' this supplier?')) {
 
@@ -401,15 +400,6 @@ function getTableData() {
         });
         array.push(arrayItem);
     });
-
-
-// Iterate Values *******************************
-//    for (x in array) {
-//        txt += array[x].Product;
-//         console.log(txt);
-//    }
-//   
-
     return array;
 
 }
@@ -457,8 +447,7 @@ function loadGRNRecords(page) {
             if (data.length > 0) {
                 if (page == undefined) {
                     page = 1;
-                }
-                console.log(data.length);
+                } 
                 var tableDesign = "";
                 var pageId = 1;
                 var paginationCount = 10;
@@ -549,11 +538,6 @@ function loadGRNProducts(val) {
     });
 }
 
-function searchGRNRecords() {
-    console.log($('#search_param').val());
-    console.log($('#search_val').val());
-}
-
 //********************************************* GRN Transactions
 
 function loadGRNTrans() {
@@ -571,12 +555,11 @@ function loadGRNTrans() {
         dataType: 'JSON',
         success: function(data) {
 
-            if (data.length > 0) { 
+            if (data.length > 0) {
                 var tableDesign = "";
                 var tableDesign2 = "";
                 $('#grn_trans_table').empty();
                 for (var i = 0; i < data.length; i++) {
-                    console.log(data[i]);
                     tableDesign += "<tr>";
                     tableDesign += "<td>" + data[i].idgrn + "<input type='hidden' value='" + data[i].issued_by + "' id='" + data[i].idgrn + "'/></td>";
                     tableDesign += "<td>" + data[i].issued_date + "</td>";
@@ -595,9 +578,9 @@ function loadGRNTrans() {
                         grn_To: grn_To
                     },
                     dataType: 'JSON',
-                    success: function(data) { 
-                        
-                        $('#grn_total').html("Total (Rs): "+parseFloat(Math.round(data * 100) / 100).toFixed(2) );
+                    success: function(data) {
+
+                        $('#grn_total').html("Total (Rs): " + parseFloat(Math.round(data * 100) / 100).toFixed(2));
                     },
                     error: function(e) {
                         console.log(e);
@@ -611,4 +594,290 @@ function loadGRNTrans() {
         }
     });
 
+}
+
+
+// ********************************************************************************* Product Registration
+function loadProductSupplierNames() {
+    $.ajax({
+        type: "POST",
+        url: './DAO/view_Suppliers.php',
+        data: {
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            $('#item_supplier').empty();
+            var optionDesign = "<option value='0' selected='true' disabled='disabled'>Please select supplier</option>";
+            var optionDesignP = "";
+//            var optionDesign = "";
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].active_status == '1') {
+                    optionDesign += "<option value=" + data[i].idsupplier + ">" + data[i].name + "</option>";
+                }
+            }
+            $('#item_supplier').append(optionDesign);
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+function loadCategories() {
+    $.ajax({
+        type: "POST",
+        url: './DAO/view_Categories.php',
+        data: {
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            $('#item_category').empty();
+            var optionDesign = "<option value='0' selected='true' disabled='disabled'>Please select category</option>";
+            var optionDesignP = "";
+//            var optionDesign = "";
+
+            for (var i = 0; i < data.length; i++) {
+                optionDesign += "<option value=" + data[i].idcategory + ">" + data[i].name + "</option>";
+
+            }
+            $('#item_category').append(optionDesign);
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+
+
+function ProductRegitation() {
+    var readyStatus = "true";
+    var itemcode = $('#item_code').val();
+    var description = $('#item_des').val();
+    var reorderlevel = $('#reorder_level').val();
+    var category = $('#item_category').val();
+    var supplier = $('#item_supplier').val();
+    var unitprice = $('#item_unitprice').val();
+    var action = $('#item_action').val();
+    var itemid = $('#item_id').val();
+
+    if (itemcode == "") {
+        $('#item_code_span').html("Please fill requred data");
+        readyStatus = "false";
+    }
+    if (description == "") {
+        $('#item_des_span').html("Please fill requred data");
+        readyStatus = "false";
+    }
+    if (reorderlevel == "") {
+        $('#reorder_span').html("Please fill requred data");
+        readyStatus = "false";
+    }
+    if (category == "0") {
+        $('#item_category_span').html("Please fill requred data");
+        readyStatus = "false";
+    }
+    if (supplier == "0") {
+        $('#item_sup_span').html("Please fill requred data");
+        readyStatus = "false";
+    }
+    if (unitprice == "") {
+        $('#unitprice_span').html("Please fill requred data");
+        readyStatus = "false";
+    }
+
+    if (readyStatus == "true") {
+        $.ajax({
+            type: "POST",
+            url: './DAO/product_registration.php',
+            data: {
+                itemcode: itemcode,
+                description: description,
+                reorderlevel: reorderlevel,
+                category: category,
+                supplier: supplier,
+                unitprice: unitprice,
+                action: action,
+                itemid: itemid
+            },
+            dataType: 'JSON',
+            success: function(data) {
+                if (data != "Error") {
+                    $('#item_table').empty();
+//                  var tableDesign = item_Table(data,paginationCountt,0);
+                    loadItemDetails(1);
+//                    $('#item_table').append(tableDesign);
+                    $('#item_status').html("<div class='alert alert-success'><strong>Success!</strong></div>");
+                    item_clear();
+                } else {
+                    $('#item_status').html("<div class='alert alert-danger'><strong>Error!</strong>Please try again.</div>");
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+}
+
+function item_Table(data, datalength, startval) {
+    var tableDesign = "";
+//idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price, activestatus, idcategory, name, idsupplier, name, contactno, address, active_status, company_discount
+    for (var i = startval; i < datalength; i++) {
+        if(data[i].available_qty>0){
+            
+            tableDesign += "<tr>";
+        }else{
+            tableDesign += "<tr class='danger'>";
+        }
+        
+        tableDesign += "<td>" + data[i].itemcode + "<input type='hidden' value='" + data[i].idproduct + "' id='itemid" + i + "'/></td>";
+        tableDesign += "<td>" + data[i].description + "</td>";
+        tableDesign += "<td>" + data[i].unit_price + "</td>";
+        tableDesign += "<td>" + data[i].cname + "</td>";
+        tableDesign += "<td>" + data[i].available_qty + "</td>";
+        tableDesign += "<td>" + data[i].sname + "</td>";
+        tableDesign += "<td>" + data[i].reorder_level + "</td>";
+        tableDesign += "<td class='text-center'><button class='btn btn-default btn-primary btntablesize' onclick='loadItemFormData(" + data[i].idproduct + ")'>View</button></td>";
+        if (data[i].activestatus == 1) {
+            tableDesign += "<td class='text-center'><button class='btn btn-default btn-danger btntablesize' onclick='active_status_item(" + data[i].idproduct + ",0)'>Block</button></td>";
+        } else {
+            tableDesign += "<td class='text-center'><button class='btn btn-default btn-success btntablesize' onclick='active_status_item(" + data[i].idproduct + ",1)'>Active</button></td>";
+        }
+        tableDesign += "</tr>";
+
+    }
+    return tableDesign;
+}
+function loadItemFormData(val) {
+    $('#item_status').empty();
+    product_changeText();
+    $.ajax({
+        type: "POST",
+        url: './DAO/load_Item.php',
+        data: {
+            productid: val
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#item_code').val(data[i].itemcode);
+                $('#item_des').val(data[i].description);
+                $('#reorder_level').val(data[i].reorder_level);
+                $('#item_unitprice').val(data[i].unit_price);
+                $('#item_category').val(data[i].idcategory);
+                $('#item_supplier').val(data[i].idsupplier);
+                $('#item_id').val(data[i].idproduct);
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function active_status_item(id, status) {
+
+    $('#item_status').empty();
+    var status_word = "";
+    if (status == 0) {
+        status_word = "block";
+    } else {
+        status_word = "active";
+    }
+    if (confirm('Are you sure you want to ' + status_word + ' this product?')) {
+
+        $.ajax({
+            type: "POST",
+            url: './DAO/active_status_Product.php',
+            data: {
+                product_id: id,
+                status: status
+            },
+            dataType: 'JSON',
+            success: function(data) {
+                if (data != "Error") {
+                    $('#item_table').empty();
+//                    loadItemDetails(1); 
+                    $('#item_status').html("<div class='alert alert-success'><strong>Success!</strong></div>");
+                } else {
+                    $('#item_status').html("<div class='alert alert-danger'><strong>Error!</strong>Please try again.</div>");
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    } else {
+        // Do nothing!
+    }
+}
+
+function loadItemDetails(page) {
+    $('#item_status').empty();
+    var search_param = $('#search_item_param').val();
+    var search_val = $('#item_name_key').val();
+    $.ajax({
+        type: "POST",
+        url: './DAO/view_items.php',
+        data: {
+            search_param: search_param,
+            search_val: search_val
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            if (data.length > 0) {
+                if (page == undefined) {
+                    page = 1;
+                }
+                var tableDesign = "";
+                var pageId = 1;
+                var paginationCount = 8;
+                var dataCount = data.length / paginationCount;
+
+                var totalpages = Math.ceil(dataCount);
+
+                $('#pagination-demo3').twbsPagination('destroy');
+                $('#pagination-demo3').twbsPagination({
+                    totalPages: totalpages,
+                    visiblePages: totalpages,
+                    onPageClick: function(event, page) {
+
+                        pageId = page * paginationCount;
+                        if (data.length <= pageId) {
+                            pageId = data.length;
+                        }
+
+                        $('#item_table').empty();
+                        var tableDesign = item_Table(data, pageId, (page - 1) * paginationCount);
+//idgrn, issued_date, totoal_amount, paid_amount, balance, issued_by, discount, suplierId, idsupplier, name, contactno, address, active_status, company_discount
+//                        for (var i = (page - 1) * paginationCount; i < pageId; i++) {
+//                            tableDesign += "<tr>";
+//                            tableDesign += "<td>" + data[i].idgrn + "<input type='hidden' value='" + data[i].issued_by + "' id='" + data[i].idgrn + "'/></td>";
+//                            tableDesign += "<td>" + data[i].issued_date + "</td>";
+//                            tableDesign += "<td>" + parseFloat(Math.round(data[i].totoal_amount * 100) / 100).toFixed(2) + "</td>";
+//                            tableDesign += "<td>" + parseFloat(Math.round(data[i].paid_amount * 100) / 100).toFixed(2) + "</td>";
+//                            tableDesign += "<td>" + parseFloat(Math.round(data[i].balance * 100) / 100).toFixed(2) + "</td>";
+//                            tableDesign += "<td>" + data[i].name + "</td>";
+//                            tableDesign += "<td class='text-center'><button class='btn btn-default btn-primary' data-toggle='modal' data-target='#grn_products' onclick='loadGRNProducts(" + data[i].idgrn + ")'>More Details</button></td>";
+//                            tableDesign += "</tr>";
+//
+//                        }
+
+                        $('#item_table').append(tableDesign);
+
+                    }
+
+                });
+            } else {
+                $('#grn_records_table').empty();
+            }
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
 }
