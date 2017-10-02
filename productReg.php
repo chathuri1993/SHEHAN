@@ -64,7 +64,7 @@ include './metaLibs.php';
         <div class="row rowPadding">
             <div class="col-lg-3 col-md-3 col-sm-2"></div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
-                <label class="valign">Unit Price</label>
+                <label class="valign">Company List Price</label>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
                 <span id="unitprice_span" class="spanMsg"></span>
@@ -90,10 +90,12 @@ include './metaLibs.php';
             </div>
             <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
                 <span id="item_sup_span" class="spanMsg"></span>
-                <select id="item_supplier" onfocus="clearElement('#item_sup_span')" name="itemsupplier" class="form-control"> 
-                </select>
+                <select id="item_supplier" onfocus="clearElement('#item_sup_span')" name="itemsupplier" class="form-control" onclick="loadDiscountHint(this.value);"> 
+                </select>                
             </div>
+            <span id="item_dis_hint" style="color: green;"></span>
         </div>
+
         <div class="row rowPadding">
             <div class="col-lg-5 col-md-5 col-sm-4"></div>
             <div class="col-lg-1 col-md-1 col-sm-2 col-xs-6 text-center">
@@ -145,25 +147,27 @@ include './metaLibs.php';
             <div class="col-lg-10 col-md-4 col-sm-3 col-xs-12">
                 <span class="label label-danger">Red row products are out of stock</span>
                 <div class="table-responsive">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Item Code</th>
-                            <th>Item Description</th>
-                            <th>Unit Price</th>
-                            <th>Category</th>
-                            <th>Available Qty</th>
-                            <th>Supplier</th>
-                            <th>Reorder level</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="item_table">
+                    <table class="table table-hover table-bordered">
+                        <colgroup id="randomColColor">                           
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Item Code</th>
+                                <th>Item Description</th>
+                                <th>Unit Price</th>
+                                <th>Category</th>
+                                <th>Available Qty</th>
+                                <th>Supplier</th>
+                                <th>Reorder level</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="item_table">
 
 
-                    </tbody>
-                </table> 
+                        </tbody>
+                    </table> 
                 </div>
             </div>
             <div class="col-lg-1 col-md-4 col-sm-3"></div>
@@ -184,27 +188,27 @@ include './metaLibs.php';
 
     </div>
     <script>
-    $(document).ready(function(e) {
+        $(document).ready(function(e) {
 
-        $('#pagination-demo3').twbsPagination({
-            totalPages: "5",
-            visiblePages: "2",
-            onPageClick: function(event, page) {
+            $('#pagination-demo3').twbsPagination({
+                totalPages: "5",
+                visiblePages: "2",
+                onPageClick: function(event, page) {
 
-                loadItemDetails(page);
+                    loadItemDetails(page);
 
-            }
-        });
+                }
+            });
 
-        $('.search-panel .dropdown-menu').find('a').click(function(e) {
-            e.preventDefault();
-            var param = $(this).attr("href").replace("#", "");
+            $('.search-panel .dropdown-menu').find('a').click(function(e) {
+                e.preventDefault();
+                var param = $(this).attr("href").replace("#", "");
 
-            var concept = $(this).text();
+                var concept = $(this).text();
 
-            $('.search-panel span#search_item_concept').text(concept);
-            $('.input-group #search_item_param').val(param);
-        });
+                $('.search-panel span#search_item_concept').text(concept);
+                $('.input-group #search_item_param').val(param);
+            });
         });
     </script>
     <script src="js/shehan.main.js"></script>

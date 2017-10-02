@@ -10,8 +10,6 @@ if($searchval==''){
 }else{
      $dataOutPut = getProductDetailsWhere($searchparam,$searchval);  
 }
-
-
 echo json_encode($dataOutPut);
 
 

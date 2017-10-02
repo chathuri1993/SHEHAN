@@ -47,7 +47,7 @@ include './metaLibs.php';
             <div class="col-lg-12 col-md-12 col-sm-12"><a href="supplierRegistration.php" class="pull-right btn btn-primary">New Supplier&nbsp; <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
         </div>
         <div class="row">
-            <div class="col-lg-12 text-center h2">Good recieve notice</div>
+            <div class="col-lg-12 text-center h2">Good Recieve Notice</div>
         </div>
         <div class="row rowPadding">
             <div class="col-lg-3 col-md-3 col-sm-2"></div>
@@ -66,7 +66,7 @@ include './metaLibs.php';
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
-                <label class="valign">GRN Id</label>
+                <label class="valign">GRN ID</label>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                 <span id="grn_span" class="spanMsg"></span>
@@ -76,10 +76,9 @@ include './metaLibs.php';
                 <label class="valign">Supplier</label>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12" id="grn_option">         
-                <select id="grn_supplier_name" name="grnsuppliername" class="form-control" onchange="loadProducts(this.value)"> 
+                <select id="grn_supplier_name" name="grnsuppliername" class="form-control" onchange="loadProducts(this.value);"> 
                     <option value="0" selected="true" disabled="disabled">Please select supplier</option>
                 </select>
-
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
@@ -99,7 +98,7 @@ include './metaLibs.php';
         <div class="row rowPadding">
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
-                <label class="valign">Qty</label>
+                <label class="valign">QTY</label>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <span id="grn_qty_span" class="spanMsg"></span>
@@ -141,13 +140,11 @@ include './metaLibs.php';
                     <thead>
                         <tr>
                             <th>Check</th>
-                            <th>Product</th>
+                            <th>Item Description</th>
                             <th style="display:none;">Productid</th>
-                            <th>Unit price</th>
-                            <th>Discount</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-
+                            <th>QTY</th>
+                            <th>Purchase Price</th>                            
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody id="grn_table"></tbody>
@@ -181,7 +178,7 @@ include './metaLibs.php';
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                 <span id="grn_paid_amount_span" class="spanMsg"></span>
-                <input onfocus="clearElement('#grn_paid_amount_span')" type="number" class="form-control pull-right amountstyles" min="0" required id="grn_paid_amount" name="grnpaidamount">
+                <input onfocus="clearElement('#grn_paid_amount_span')" type="text" class="form-control pull-right amountstyles" min="0" required id="grn_paid_amount" name="grnpaidamount">
             </div>
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
         </div>
@@ -215,8 +212,8 @@ include './metaLibs.php';
                     <div> 
                         <div style="background-color: #ffffff" class="col-lg-12 text-center"><img src="images/logo/shehan.svg"  width="200px" height="100px"/></div>
                         <div class="col-lg-12 text-center">Shehan Fernando</div>
-                        <div class="col-lg-12 text-center">No 55/3, Maind Street, Negombo</div>
-                        <div class="col-lg-12 text-center">Tel: 031-2234342 / 077-7676784</div>
+                        <div class="col-lg-12 text-center">No 55/3, Main Street, Negombo</div>
+                        <div class="col-lg-12 text-center">Tel: 031-2234342 / 076-6669027</div>
                         <div class="col-lg-12 text-center">Fax: 031-2234342</div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">  
                             <h4 class="modal-title" id="grn_records_ref"></h4>
@@ -231,7 +228,6 @@ include './metaLibs.php';
                                     <th>Item</th>
                                     <th>Qty</th>
                                     <th>Unit Price</th> 
-
                                 </tr>
                             </thead>
                             <tbody id="grn_print_products"></tbody>

@@ -120,23 +120,23 @@ function addRow() {
         console.log(status);
         if (status == "false") {
             var markup = "";
-            var price = (unit_price - ((unit_price * discount) / 100)) * qty;
-
+            var purchasePrice = parseFloat(unit_price - ((unit_price * discount) / 100)).toFixed(2);
+            var amount = purchasePrice * qty;
+            
             markup += "<tr>";
             markup += "<td><input type='checkbox' name='grn_status'/></td>";
             markup += "<td>" + products + "</td>";
             markup += "<td style='display:none;'>" + productid + "</td>";
-            markup += "<td>" + unit_price + "</td>";
-            markup += "<td>" + discount + "</td>";
             markup += "<td>" + qty + "</td>";
-            markup += "<td class='grn_total'>" + parseFloat(Math.round(price * 100) / 100).toFixed(2) + "</td>";
+            markup += "<td>" + purchasePrice + "</td>";            
+            markup += "<td class='grn_total'>" + parseFloat(Math.round(amount * 100) / 100).toFixed(2) + "</td>";
             markup += "</tr>";
             $("#grn_table").append(markup);
 
             sumOfColumns();
             grn_add_clear();
         } else {
-            alert("Product already exist. Please remove exixting value.");
+            alert("Product already exist. Please remove existing value.");
         }
     }
 
@@ -156,9 +156,7 @@ function deleteRow() {
 }
 
 function sumOfColumns() {
-
     var totalPrice = 0;
-
 
     $(".grn_total").each(function() {
         totalPrice += parseFloat($(this).html());
@@ -182,9 +180,8 @@ function grn_clear() {
 
     generateId();
     loadSupplierNames();
-
-
 }
+
 function grn_add_clear() {
 //    $('select#grn_products').val("0");
     $('#grn_qty').val("1");
@@ -192,8 +189,8 @@ function grn_add_clear() {
     $('#grn_discount').val("");
     $('#grn_paid_amount').val("");
     $('#grn_balance').val("0.00");
-
 }
+
 $(document).keyup(function(e) {
     $('#grn_paid_amount').keypress(function(e) {
         if (e.which == 13) {

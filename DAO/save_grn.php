@@ -23,14 +23,13 @@ if ($status == "1") {
     $data = json_decode($grn_product, true);
     $sports = array();
     foreach ($data as $item) {
-        $qty = $item['Qty'];
-        $product = $item['Product'];
+        $qty = $item['QTY'];
+        $product = $item['Item Description'];
         $productid = $item['Productid'];
-        $unitprice = $item['Unit price'];
-        $producttotal = $item['Price'];
+        $unitprice = $item['Purchase Price'];
+        $producttotal = $item['Amount'];
         $status2 = save_grnRegistry($grn_id, $qty, $unitprice, $productid);
     }
 }
-
 
 echo json_encode($status);

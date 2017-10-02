@@ -1,8 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 function supplier_Table(data) {
     var tableDesign = "";
@@ -121,6 +116,7 @@ function loadSupFormData(val) {
         }
     });
 }
+
 function searchSupplier() {
     $('#supplier_status').empty();
     var sup_name_key = $('#supplier_name_key').val();
@@ -251,8 +247,8 @@ function loadProducts(val) {
         });
     }
     grn_add_clear();
-
 }
+
 function loadProductDetails(val) {
     if (val != 0) {
         $.ajax({
@@ -317,6 +313,7 @@ function save_Grn() {
         $('#grn_product_span').html("Please select requred data");
         readyStatus = "false";
     }
+    console.log(array);
     if (readyStatus == "true") {
         $.ajax({
             type: "POST",
@@ -332,7 +329,7 @@ function save_Grn() {
             },
             dataType: 'JSON',
             success: function(data) {
-
+                console.log(data);
                 // Success unoth print wenawa **************
                 if (data == "1") {
                     $('#grn_status').html("<div class='alert alert-success'><strong>Success!</strong></div>");
@@ -344,16 +341,17 @@ function save_Grn() {
                         },
                         dataType: 'JSON',
                         success: function(data) {
-                            var tableDesign = "";
+                            var tableDesign2 = "";
+                            $('#grn_print_products').empty();
 //idgrnregistry, qty, unit_price, idgrn, idproduct, idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price
 
                             for (var i = 0; i < data.length; i++) {
-                                tableDesign += "<tr>";
-                                tableDesign += "<td>" + data[i].itemcode + "</td>";
-                                tableDesign += "<td>" + data[i].description + "</td>";
-                                tableDesign += "<td>" + data[i].qty + "</td>";
-                                tableDesign += "<td>" + parseFloat(Math.round(data[i].unit_price * 100) / 100).toFixed(2) + "</td>";
-                                tableDesign += "</tr>";
+                                tableDesign2 += "<tr>";
+                                tableDesign2 += "<td>" + data[i].itemcode + "</td>";
+                                tableDesign2 += "<td>" + data[i].description + "</td>";
+                                tableDesign2 += "<td>" + data[i].qty + "</td>";
+                                tableDesign2 += "<td>" + parseFloat(Math.round(data[i].unit_price * 100) / 100).toFixed(2) + "</td>";
+                                tableDesign2 += "</tr>";
 
                                 $('#grn_records_issued').html("Issued By: " + data[i].issued_by);
                                 $('#grn_records_ref').html("GRN ID: " + grinid);
@@ -363,7 +361,7 @@ function save_Grn() {
                                 $('#grn_records_sup').html("Supplier: " + data[i].name);
                             }
 
-                            $('#grn_print_products').append(tableDesign);
+                            $('#grn_print_products').append(tableDesign2);
                             $('#grn_print').modal('show');
                         },
                         error: function(e) {
@@ -385,6 +383,7 @@ function save_Grn() {
         });
     }
 }
+
 function getTableData() {
     var array = [];
     var headers = [];
@@ -403,6 +402,7 @@ function getTableData() {
     return array;
 
 }
+
 function generateId() {
 
     $.ajax({
@@ -426,6 +426,7 @@ function setGRNHiddenValue() {
     $('#all_grnrecords').val("all");
     loadGRNRecords();
 }
+
 function loadGRNRecords(page) {
 
     var search_param = $('#search_param').val();
@@ -447,7 +448,7 @@ function loadGRNRecords(page) {
             if (data.length > 0) {
                 if (page == undefined) {
                     page = 1;
-                } 
+                }
                 var tableDesign = "";
                 var pageId = 1;
                 var paginationCount = 10;
@@ -617,13 +618,13 @@ function loadProductSupplierNames() {
                 }
             }
             $('#item_supplier').append(optionDesign);
-
         },
         error: function(e) {
             console.log(e);
         }
     });
 }
+
 function loadCategories() {
     $.ajax({
         type: "POST",
@@ -649,8 +650,6 @@ function loadCategories() {
         }
     });
 }
-
-
 
 function ProductRegitation() {
     var readyStatus = "true";
@@ -726,16 +725,16 @@ function item_Table(data, datalength, startval) {
     var tableDesign = "";
 //idproduct, itemcode, description, available_qty, reorder_level, idcategory, idsupplier, unit_price, activestatus, idcategory, name, idsupplier, name, contactno, address, active_status, company_discount
     for (var i = startval; i < datalength; i++) {
-        if(data[i].available_qty> data[i].reorder_level ){
-            
+        if (data[i].available_qty > data[i].reorder_level) {
+
             tableDesign += "<tr>";
-        }else{
+        } else {
             tableDesign += "<tr class='danger'>";
         }
-        
+
         tableDesign += "<td>" + data[i].itemcode + "<input type='hidden' value='" + data[i].idproduct + "' id='itemid" + i + "'/></td>";
         tableDesign += "<td>" + data[i].description + "</td>";
-        tableDesign += "<td>" + data[i].unit_price + "</td>";
+        tableDesign += "<td>" + parseFloat(data[i].unit_price).toFixed(2) + "</td>";
         tableDesign += "<td>" + data[i].cname + "</td>";
         tableDesign += "<td>" + data[i].available_qty + "</td>";
         tableDesign += "<td>" + data[i].sname + "</td>";
@@ -751,6 +750,7 @@ function item_Table(data, datalength, startval) {
     }
     return tableDesign;
 }
+
 function loadItemFormData(val) {
     $('#item_status').empty();
     product_changeText();
@@ -815,10 +815,42 @@ function active_status_item(id, status) {
     }
 }
 
+function colColorChanger(columnName) {
+    $('#randomColColor').empty();
+    var IterateVal = 0;
+    if (columnName == "itemcode") {
+        IterateVal = 1;
+    } else if (columnName == "s.name") {
+        IterateVal = 6;
+    } else if (columnName == "description") {
+        IterateVal = 2;
+    } else if (columnName == "c.name") {
+        IterateVal = 4;
+    } else if (columnName == "available_qty") {
+        IterateVal = 5;
+    } else {
+        IterateVal = 3;
+    }
+    console.log(IterateVal+" val");
+    var apTxt ="";
+    for(var t=0;t<IterateVal;t++){
+        if((IterateVal-1)==t){
+            apTxt += ' <col class="bg-success"></col>';
+        }else{
+            apTxt += ' <col class=""></col>';
+        }        
+    }
+    
+    $('#randomColColor').append(apTxt);
+}
+
 function loadItemDetails(page) {
     $('#item_status').empty();
     var search_param = $('#search_item_param').val();
     var search_val = $('#item_name_key').val();
+    console.log("aaaaaaaaaaa "+search_param);
+    colColorChanger(search_param);
+
     $.ajax({
         type: "POST",
         url: './DAO/view_items.php',
@@ -875,6 +907,26 @@ function loadItemDetails(page) {
                 $('#grn_records_table').empty();
             }
 
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function loadDiscountHint(supplierID) {
+    $.ajax({
+        type: "POST",
+        url: './DAO/load_Supplier.php',
+        data: {
+            supplierKey: supplierID
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            $('#item_dis_hint').text();
+            $.each(data, function(bb) {
+                $('#item_dis_hint').text(data[bb].company_discount + "% discount");
+            });
         },
         error: function(e) {
             console.log(e);
